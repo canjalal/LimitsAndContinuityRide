@@ -10,7 +10,7 @@ for(let x = MIN_X; x <= MAX_X; x++) {
 
 export const fineLabels = [];
     
-for(let x = MIN_X; x <= MAX_X; x += 0.1) {
+for(let x = MIN_X; x <= MAX_X; x += 0.05) {
     fineLabels.push(x);
 
 }

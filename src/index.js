@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(ctx);
 
     const testf = new MathFunction();
+    // console.log(testf.generatefineData().length);
 
     const myChart = new Chart(ctx, {
         type: 'line',
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             elements: {
                 point: {
-                    radius: 0
+                    radius: 1
                 }
 
             }
