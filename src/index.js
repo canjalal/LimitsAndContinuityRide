@@ -1,3 +1,4 @@
+// import "./scripts/styles/reset.css"
 const TestData = require("./scripts/testdata.js");
 const { MathFunction, coarseLabels, fineLabels } = require("./scripts/mathfunction");
 const { regNode, vertAsympNode, removDisNode, justDisNode } = require("./scripts/pointnode");
