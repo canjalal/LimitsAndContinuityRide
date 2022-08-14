@@ -5,10 +5,10 @@ export class MathFunction {
         this.yvalues = []; // y-values
         this.mvalues = []; // derivative values
         this.yvalues[0] = (Math.random() - 0.5)*(MAX_X - MIN_X)/4; // random y value
-        this.mvalues[0] = (Math.random() - 0.5); // random slope
+        this.mvalues[0] = (Math.random() - 0.5) * 0.5; // random slope
         for(let i = 0; i < coarseLabels.length - 1; i++) {
             this.yvalues[i + 1] = this.mvalues[i] * (1) + this.yvalues[i];
-            this.mvalues[i + 1] = this.mvalues[i] + (Math.random() - 0.5) / 1.5;
+            this.mvalues[i + 1] = this.mvalues[i] + (Math.random() - 0.5) * 0.5;
         }
 
         this.generateRandomFunction();
@@ -101,7 +101,14 @@ for(let x = MIN_X; x <= MAX_X; x++) {
 
 export const fineLabels = [];
     
-for(let x = MIN_X; x <= MAX_X; x += 0.02) {
-    fineLabels.push(x.toFixed(2));
+for(let x = MIN_X; x <= MAX_X; x += 0.05) {
+    fineLabels.push(x.toFixed(1));
     // console.log(x.toFixed(1));
 }
+
+// Generate features:
+
+// Default feature: clickable filled y value
+// Also, dashed vertical line with x-value highlighted
+// Optional ones, unclickable unfilled y value
+// asymptote

@@ -43,3 +43,14 @@ export function generateData(f, dataLabels) {
 //         this.y
 //     }
 // }
+
+export function generatedataHashArray(xarray, yarray) {
+    let outputData = [];
+
+    for(let i = 0; i < xarray.length; i++) {
+        outputData[i] = {x: xarray[i], y: yarray[i]};
+    }
+
+    return outputData;
+
+}
