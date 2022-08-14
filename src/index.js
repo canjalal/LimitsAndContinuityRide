@@ -47,6 +47,10 @@ import {
     SubTitle
   );
 
+  function clickHandler(click) { // click is an event
+      const points = myChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
+  }
+
 document.addEventListener('DOMContentLoaded', () => {
     const mainCanvas = document.getElementById('main-canvas');
     mainCanvas.width = 800;
@@ -64,21 +68,44 @@ document.addEventListener('DOMContentLoaded', () => {
         data: {
             // labels: fineLabels,
             datasets: [{
-                label: 'Sin X',
+                label: 'FineFunction',
                 data: TestData.generatedataHashArray(fineLabels, testf.generatefineData()),
                 showLine: true,
-                fillColor: "rgba(220, 220, 220, 0.2)",
-                strokeColor: "rgba(220, 220, 2220, 1)",
-                // pointColor: "rgba(220, 220, 220, 1)",
-                // pointStrokeColor: "#fff",
-                // pointHighlightFill: "#fff",
-                // pointHighlightStroke: "rgba(220, 220, 220, 1)",
+
                 pointStyle: 'circle',
                 radius: 0,
                 borderWidth: 4
-            }]
+            },
+            {
+            label: 'DiscretePts',
+            data: testf.generateDiscretePts(),
+            showLine: false,
+
+            pointStyle: 'circle',
+            radius: 5,
+            borderWidth: 4,
+            hitRadius: 2,
+            borderColor: "rgba(0, 0, 0, 1)",
+            backgroundColor: "rgba(0, 0, 1)"
+        },
+
+        {
+            label: 'Holes',
+            data: testf.generateHoles(),
+            showLine: false,
+
+            pointStyle: 'circle',
+            radius: 5,
+            borderWidth: 4,
+            borderColor: "rgba(0, 0, 0, 1)"
+        }
+
+        
+        
+        ]
         },
         options: {
+            responsive: false,
             scales: {
                 x: {
 

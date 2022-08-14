@@ -32,7 +32,7 @@ export class MathFunction {
             outputarray.push(...currnode.yValues);
             currnode = currnode.next;
         }
-        console.log(outputarray.length);
+        // console.log(outputarray.length);
         return outputarray;
 
     }
@@ -86,6 +86,45 @@ export class MathFunction {
             currnode.generatefineY();
             currnode = currnode.next;
         }
+    }
+
+    generateDiscretePts() {
+
+        let dataSet = [];
+
+        if(this.pNode) {
+            let currnode = this.pNode;
+
+            // prevnode = currnode;
+    
+            for(let i = 0; i < coarseLabels.length; i++) {
+                // let currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
+                if(currnode.yFilled) dataSet.push({x: coarseLabels[i], y: currnode.yFilled});
+                currnode = currnode.next;
+            }
+
+        }
+
+        return dataSet;
+    }
+
+    generateHoles() {
+
+        let dataSet = [];
+
+        if(this.pNode) {
+            let currnode = this.pNode;
+
+            // prevnode = currnode;
+    
+            for(let i = 0; i < coarseLabels.length; i++) {
+                if(currnode.yunFilled) dataSet.push({x: coarseLabels[i], y: currnode.yunFilled});
+                currnode = currnode.next;
+            }
+
+        }
+
+        return dataSet;
     }
 
 }
