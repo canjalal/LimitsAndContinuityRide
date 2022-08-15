@@ -4,6 +4,7 @@ const { MathFunction, coarseLabels, fineLabels } = require("./scripts/mathfuncti
 const { regNode, vertAsympNode, removDisNode, justDisNode } = require("./scripts/pointnode");
 window.MathFunction = MathFunction;
 window.TestData = TestData;
+// window.myChart = myChart;
 import {
     Chart,
     ArcElement,
@@ -63,8 +64,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const testf = new MathFunction();
     // console.log(testf.generatefineData().length);
 
+    function drawVertLine(chart, x) {
+
+            let ctx = chart.ctx;
+
+            let xAxis = chart.scales.x
+            let yAxis = chart.scales.y;
+
+            let xpos = xAxis.getPixelForValue(x);
+            // console.log(xpos);
+            ctx.save();
+            ctx.font = '18px sans-serif';
+            ctx.fillText(`x = ${x}`, xpos - 18, yAxis.bottom - 10);
+            ctx.beginPath();
+            ctx.setLineDash([5, 15]);
+            ctx.moveTo(xpos, yAxis.top);
+            ctx.lineTo(xpos, yAxis.bottom);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
+            ctx.stroke();
+            ctx.restore();
+            ctx.setLineDash([]);
+
+    }
+
+
     const myChart = new Chart(ctx, {
         type: 'scatter',
+        plugins: [{
+            afterDraw: chart => {
+
+                testf.generateHoles().forEach((ele) => {
+                    if(ele.type === 'vertAsymp') drawVertLine(chart, ele.x);
+
+                });
+
+                // for(let x = i)
+              if (chart.tooltip?._active?.length) {
+                let x = chart.tooltip._active[0].element.x;
+                let y = chart.tooltip._active[0].element.y;
+                let elem = chart.tooltip._active[0].element.$context.raw;
+
+
+                // console.log(chart.tooltip._active[0].element.$context);
+                // if(x) {
+                //     let yAxis = chart.scales.y;
+                //     let ctx = chart.ctx;
+                //     ctx.save();
+                //     ctx.fillText(`x = ${elem.x}`, x, yAxis.bottom);
+                //     ctx.beginPath();
+                //     ctx.moveTo(x, yAxis.top);
+                //     ctx.lineTo(x, yAxis.bottom);
+                //     ctx.lineWidth = 2;
+                //     ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
+                //     ctx.stroke();
+                //     ctx.restore();
+                // }
+
+              }
+            }
+          }],
         data: {
             // labels: fineLabels,
             datasets: [{
@@ -74,7 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 pointStyle: 'circle',
                 radius: 0,
-                borderWidth: 4
+                borderColor: "rgb(96, 96, 96, 1)",
+                borderWidth: 3,
+                pointHitRadius: 0
             },
             {
             label: 'DiscretePts',
@@ -82,8 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showLine: false,
 
             pointStyle: 'circle',
-            radius: 5,
-            borderWidth: 4,
+            radius: 4,
+            borderWidth: 3,
             hitRadius: 2,
             borderColor: "rgba(0, 0, 0, 1)",
             backgroundColor: "rgba(0, 0, 1)"
@@ -95,8 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showLine: false,
 
             pointStyle: 'circle',
-            radius: 5,
-            borderWidth: 4,
+            radius: 4,
+            borderWidth: 3,
             borderColor: "rgba(0, 0, 0, 1)"
         }
 
@@ -105,6 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
         },
         options: {
+            plugins: { tooltip: { enabled: false } },
+
             responsive: false,
             scales: {
                 x: {
@@ -138,6 +201,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+
+    console.log(myChart);
+
+    function clickHandler(click) {
+        const points = myChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
+        if(points.length) {
+            const firstPoint = points[0];
+            console.log(firstPoint);
+            const value = myChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+            // console.log(firstPoint.datasetIndex);
+
+            if(firstPoint.datasetIndex !== 0) {
+                console.log(value.type);
+            }
+            // console.log(value.y);
+        }
+    }
+
+    document.addEventListener('click', clickHandler);
+
+    // drawVertLine(myChart, 5);
 
     // console.log(TestData.generatedataHash(fineLabels, testf.generatefineData()));
 

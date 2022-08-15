@@ -1,3 +1,5 @@
+import { FINE_GRAIN, VOLATILITY } from "./mathfunction";
+
 class PointNode {
     constructor(x, y, m, type) {
         this.next = null;
@@ -10,7 +12,7 @@ class PointNode {
         this.yFilled = null;
         this.yunFilled = null;
         this.fineX = [];
-        for(let i = 0; i < 1; i += 0.05) {
+        for(let i = 0; i < 1; i += FINE_GRAIN) {
             this.fineX.push(i);
         }
     }
@@ -41,6 +43,7 @@ class regNode extends PointNode {
                 // this.yValues.push(2*this.m  / (2*Math.PI) * Math.tan(Math.PI*x / 2) + this.y); // generate linear values (for now)
                 this.yValues.push(Math.sign(mNext) * Math.log(1 - x) + (this.m + 1 * Math.sign(mNext)) * x + this.y)
             }
+            this.yValues[this.yValues.length - 1] += (this.yValues[this.yValues.length - 1] - this.yValues[this.yValues.length - 2]) * 3;
             // this.yValues.at(-1) = Math.sign(this.m) * this.yValues.at(-1);
         } else {
             for(let x of this.fineX) {
@@ -53,7 +56,8 @@ class regNode extends PointNode {
 
 class vertAsympNode extends PointNode {
     constructor(x, y, m) {
-        super(x, y, m, 'vertAsymp'); // neither y-filled nor y-unfilled is defined
+        super(x, y, m, 'vertAsymp');
+        this.yunFilled = y; // neither y-filled nor y-unfilled is defined
     } // don't have vertical asymptotes next to each other
 
     generatefineY() {
@@ -65,6 +69,7 @@ class vertAsympNode extends PointNode {
             this.yValues.push(-Math.sign(this.m) * Math.log(x) + (mNext + 1 * Math.sign(this.m)) * (x - 1) + yNext) // vertical asymptote at 0 and matching slope at 1
         }
         this.yValues[0] = NaN;
+        this.yValues[1] += (this.yValues[1] - this.yValues[2]) * 3;
 
     }
 }
@@ -73,7 +78,7 @@ class removDisNode extends PointNode {
     constructor(x, y, m) {
         super(x, y, m, "removeable");
                 // generate a jump of random sign that is between one and two
-        this.yFilled = y + PointNode.randomJump(1.5, 1); // y-value is defined but not at y-unfilled, otherwise same as regNode
+        this.yFilled = y + PointNode.randomJump(VOLATILITY, 1); // y-value is defined but not at y-unfilled, otherwise same as regNode
         this.yunFilled = y;
     }
     generatefineY() {
@@ -98,7 +103,7 @@ class jumpDisNode extends PointNode {
         super(x, y, m, "jumpDisc");
         this.yFilled = y;
         // generate a jump of random sign that is at between 1 and 2
-        this.yunFilled = y + PointNode.randomJump(1.5, 1); // function continues forth from y-unfilled
+        this.yunFilled = y + PointNode.randomJump(VOLATILITY, 1); // function continues forth from y-unfilled
         // left-handed limit is yunffilled
 
     }

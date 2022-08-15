@@ -5,10 +5,10 @@ export class MathFunction {
         this.yvalues = []; // y-values
         this.mvalues = []; // derivative values
         this.yvalues[0] = (Math.random() - 0.5)*(MAX_X - MIN_X)/4; // random y value
-        this.mvalues[0] = (Math.random() - 0.5) * 0.5; // random slope
+        this.mvalues[0] = (Math.random() - 0.5) * VOLATILITY; // random slope
         for(let i = 0; i < coarseLabels.length - 1; i++) {
             this.yvalues[i + 1] = this.mvalues[i] * (1) + this.yvalues[i];
-            this.mvalues[i + 1] = this.mvalues[i] + (Math.random() - 0.5) * 0.5;
+            this.mvalues[i + 1] = this.mvalues[i] + (Math.random() - 0.5) * VOLATILITY;
         }
 
         this.generateRandomFunction();
@@ -57,6 +57,7 @@ export class MathFunction {
                         break;
                     case 'vertAsymp':
                         currnode = new vertAsympNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
+                        // render vertical lines
                         break;
                     case 'removeable':
                         currnode = new removDisNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
@@ -99,7 +100,7 @@ export class MathFunction {
     
             for(let i = 0; i < coarseLabels.length; i++) {
                 // let currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
-                if(currnode.yFilled) dataSet.push({x: coarseLabels[i], y: currnode.yFilled});
+                if(currnode.yFilled) dataSet.push({x: coarseLabels[i], y: currnode.yFilled, type: currnode.type});
                 currnode = currnode.next;
             }
 
@@ -118,7 +119,7 @@ export class MathFunction {
             // prevnode = currnode;
     
             for(let i = 0; i < coarseLabels.length; i++) {
-                if(currnode.yunFilled) dataSet.push({x: coarseLabels[i], y: currnode.yunFilled});
+                if(currnode.yunFilled) dataSet.push({x: coarseLabels[i], y: currnode.yunFilled, type: currnode.type});
                 currnode = currnode.next;
             }
 
@@ -129,8 +130,10 @@ export class MathFunction {
 
 }
 
-const MIN_X = -10;
-const MAX_X = 10;
+export const MIN_X = -10;
+export const MAX_X = 10;
+export const VOLATILITY = 0.5;
+export const FINE_GRAIN = 0.05;
 
 export const coarseLabels = [];
     
@@ -140,8 +143,8 @@ for(let x = MIN_X; x <= MAX_X; x++) {
 
 export const fineLabels = [];
     
-for(let x = MIN_X; x <= MAX_X; x += 0.05) {
-    fineLabels.push(x.toFixed(1));
+for(let x = MIN_X; x <= MAX_X; x += FINE_GRAIN) {
+    fineLabels.push(x);
     // console.log(x.toFixed(1));
 }
 
