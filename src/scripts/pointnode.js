@@ -120,8 +120,9 @@ class jumpDisNode extends PointNode {
             }
         } else {
             for(let x of this.fineX) {
-                this.yValues.push(fake_m * x + this.yunFilled); // generate linear values (for now)
+                // this.yValues.push(fake_m * x + this.yunFilled); // generate linear values (for now)
                 // this.yValues.push(-2 * fake_m / Math.PI * Math.atan((x - 1) * Math.PI * mNext / ( -2 * fake_m)) + yNext);
+                this.yValues.push(mNext * x + (this.yunFilled + yNext - mNext) / 2  + (this.yunFilled - yNext + mNext) * Math.cos(Math.PI * x) / 2);
             }
         }
         this.yValues[0] = NaN;

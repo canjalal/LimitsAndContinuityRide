@@ -1,6 +1,6 @@
 // import "./scripts/styles/reset.css"
 const TestData = require("./scripts/testdata.js");
-const { MathFunction, coarseLabels, fineLabels } = require("./scripts/mathfunction");
+const { MathFunction, coarseLabels, fineLabels, MIN_X } = require("./scripts/mathfunction");
 const { regNode, vertAsympNode, removDisNode, justDisNode } = require("./scripts/pointnode");
 const { ClickPoint, drawVertLine } = require("./scripts/clickpoints");
 const { animateLeft, animateRight, stopAnimation } = require("./scripts/animate.js");
@@ -86,15 +86,19 @@ function clickHandler(click, mathF) {
     }
 }
 
+window.addEventListener('resize', () => {
+    location.reload();
+});
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', loadgraph);
+function loadgraph() {
     let splashscreen = document.getElementsByClassName('splash-screen')[0];    
 
     const mainCanvas = document.getElementById('main-canvas');
-    mainCanvas.width = 800;
-    mainCanvas.height = 600;
-    mainCanvas.style.width  = '800px';
-    mainCanvas.style.height = '600px';
+    // mainCanvas.width = 800;
+    // mainCanvas.height = 600;
+    mainCanvas.style.width  = '80vw';
+    mainCanvas.style.height = '80vh';
     const ctx = mainCanvas.getContext('2d');
 
     // show preview pane and hide feature pane
@@ -106,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(testf.generatefineData().length);
     setTimeout(() => {
         splashscreen.style.display = 'none';
-    }, 0);
+    }, 1000);
     const myChart = new Chart(ctx, {
         type: 'scatter',
         plugins: [{
@@ -187,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scales: {
                 x: {
 
-                    min: -10,
+                    min: -8,
                     afterBuildTicks: axis => axis.ticks = coarseLabels.map(v => ({ value: v })),
                     // ticks: {
                     // }
@@ -218,4 +222,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // console.log(TestData.generatedataHash(fineLabels, testf.generatefineData()));
 
-});
+}
+

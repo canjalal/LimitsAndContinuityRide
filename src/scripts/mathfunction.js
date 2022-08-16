@@ -131,10 +131,10 @@ export class MathFunction {
 
 }
 
-export const MIN_X = -10;
-export const MAX_X = 10;
+export const MIN_X = -8;
+export const MAX_X = 8;
 export const VOLATILITY = 0.5;
-export const FINE_GRAIN = 0.05;
+export const FINE_GRAIN = 0.02;
 
 export const coarseLabels = [];
     
