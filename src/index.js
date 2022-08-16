@@ -63,6 +63,12 @@ import {
 
 function clickHandler(click, mathF) {
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
+
+    let newRightBar = document.getElementsByClassName('right-bar')[0];
+    console.log(newRightBar);
+    if(newRightBar) newRightBar.parentNode.removeChild(newRightBar);
+
+
     if(points.length) {
         const firstPoint = points[0];
         // console.log(firstPoint);
@@ -72,16 +78,14 @@ function clickHandler(click, mathF) {
         if(firstPoint.datasetIndex !== 0) {
             // console.log(value.type);
             // console.log(value.x)
-            rightBar.style.display = 'flex';
             previewRight.style.display = 'none';
-            ptLabel.innerHTML = `x = ${value.x}`;
+            
 
             let clickpt = new ClickPoint(mathF, value.x);
             console.log(clickpt);
         }
         // console.log(value.y);
     } else {
-        rightBar.style.display = 'none';
         previewRight.style.display = 'flex';
     }
 }
@@ -103,7 +107,6 @@ function loadgraph() {
 
     // show preview pane and hide feature pane
     previewRight.style.display = 'flex';
-    rightBar.style.display = 'none';
     // console.log(ctx);
 
     const testf = new MathFunction();

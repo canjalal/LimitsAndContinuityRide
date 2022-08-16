@@ -26,6 +26,8 @@ export function drawVertLine(x) {
 export class ClickPoint {
     constructor(mathF, x) { // take mathF and x value and construct data from prev fine data and current pNode
         // this.leftData = null;
+        this.x = x;
+        this.mathF = mathF;
         let currnode = mathF.pNode;
         while(currnode.x !== x) {
             if(currnode.next.x === x) {
@@ -35,19 +37,91 @@ export class ClickPoint {
         }
         this.rightData = currnode.yValues;
         this.node = currnode;
+
+        this.generaterightBar();
+
+    }
+
+    generaterightBar() {
+    //     <ul class="right-bar">
+    //     <li id="ptLabel"></li>
+    //     <li id="lhLimit">Left-hand Limit</li>
+    //     <li id="rhLimit">Right-hand Limit</li>
+    //     <li id="fullLimit">Full Limit</li>
+    //     <li id="funcValue">Function Value</li>
+    //     <li id="continuity">Continuity</li>
+    //   </ul>
+        const newRightBar = document.createElement('ul');
+        newRightBar.className = 'right-bar';
+
+        // can create a createLI helper function to DRY up this code, that takes an id, innerText, and callback for click event:
+
+        const ptLabel = document.createElement('li');
+        ptLabel.id = 'ptLabel';
+        ptLabel.innerText = `x = ${this.x}`;
+        ptLabel.addEventListener('click', (event)=> {
+            console.log("You clicked me!");
+        });
+
+        const lhLimit = document.createElement('li');
+        lhLimit.id = 'lhLimit';
+        lhLimit.innerText = 'Left-hand Limit';
+        lhLimit.addEventListener('click', (event)=> {
+            console.log(this.findLHL());
+        });
+
+        const rhLimit = document.createElement('li');
+        rhLimit.id = 'rhLimit';
+        rhLimit.innerText = 'Right-hand Limit';
+        rhLimit.addEventListener('click', (event)=> {
+            console.log(this.findRHL());
+        });
+
+        const fullLimit = document.createElement('li');
+        fullLimit.id = 'rhLimit';
+        fullLimit.innerText = 'Full Limit';
+        fullLimit.addEventListener('click', (event)=> {
+            console.log(this.findfullL());
+        });
+
+        const funcValue = document.createElement('li');
+        funcValue.id = 'funcValue';
+        funcValue.innerText = 'Function Value';
+        funcValue.addEventListener('click', (event)=> {
+            console.log(this.findF());
+        });
+
+        const continuity = document.createElement('li');
+        continuity.id = 'continuity';
+        continuity.innerText = 'Continuity';
+        continuity.addEventListener('click', (event)=> {
+            console.log(this.isContinuous());
+        });
+
+        newRightBar.appendChild(ptLabel);
+        newRightBar.appendChild(lhLimit);
+        newRightBar.appendChild(rhLimit);
+        newRightBar.appendChild(fullLimit);
+        newRightBar.appendChild(funcValue);
+        newRightBar.appendChild(continuity);
+
+        const parentDiv = document.getElementsByClassName("full-size")[0];
+
+        parentDiv.insertBefore(newRightBar, document.getElementsByClassName("preview-right")[0]);
     }
 
     findLHL() {
         if(this.node.type === 'vertAsymp') {
-            if(this.leftData[this.leftData - 1] > this.leftData[this.leftData - 2] + 1) return Infinity;
-            if(this.leftData[this.leftData - 1] < this.leftData[this.leftData - 2] - 1) return -Infinity;
-            if(Math.abs(this.leftData[this.leftData - 1] - this.leftData[this.leftData - 2]) < 0.1) return this.yunFilled;
+            // console.log(`${this.leftData[this.leftData - 2]} then ${this.leftData[this.leftData - 1]}`);
+            if(this.leftData[this.leftData.length - 1] > this.leftData[this.leftData.length - 2] + 1) return Infinity;
+            if(this.leftData[this.leftData.length - 1] < this.leftData[this.leftData.length - 2] - 1) return -Infinity;
+            if(Math.abs(this.leftData[this.leftData.length - 1] - this.leftData[this.leftData.length - 2]) < 0.1) return this.node.yunFilled;
         } else if(this.node.type === 'regular') {
-            return this.y;
+            return this.node.y;
         } else if(this.node.type === 'removeable') {
-            return this.yunFilled;
+            return this.node.yunFilled;
         } else if(this.node.type === 'jumpDisc') {
-            return this.yFilled;
+            return this.node.yFilled;
         }
     }
 
@@ -57,11 +131,11 @@ export class ClickPoint {
             if(this.rightData[1] < this.leftData[2]) return -Infinity;
             // if(Math.abs(this.leftData[this.leftData - 1] - this.leftData[this.leftData - 2]) < 0.1) return this.yunFilled;
         } else if(this.node.type === 'regular') {
-            return this.y;
+            return this.node.y;
         } else if(this.node.type === 'removeable') {
-            return this.yunFilled;
+            return this.node.yunFilled;
         } else if(this.node.type === 'jumpDisc') {
-            return this.yunFilled;
+            return this.node.yunFilled;
         }
     }
 
@@ -74,27 +148,13 @@ export class ClickPoint {
     }
 
     findF() {
-        if(!this.yFilled) return null;
-        return this.yFilled;
+        if(!this.node.yFilled) return null;
+        return this.node.yFilled;
 
     }
 
     isContinuous() {
-        if(this.findfullL() === null || this.findF() === null) return false;
-        return true;
+        // if(this.findfullL() === null || this.findF() === null) return false;
+        return (!!this.findfullL() && (this.findfullL() === this.findF()));
     }
 }
-
-let ptLabel = document.getElementById('ptLabel');
-
-ptLabel.addEventListener('click', (event)=> {
-    console.log("You clicked me!");
-    event.stopPropagation();
-});
-
-let lhLimit = document.getElementById('lhLimit');
-
-ptLabel.addEventListener('click', (event) => {
-    console.log("You clicked me!");
-    event.stopPropagation();
-});

@@ -4,8 +4,8 @@ export class MathFunction {
     constructor() {
         this.yvalues = []; // y-values
         this.mvalues = []; // derivative values
-        this.yvalues[0] = (Math.random() - 0.5)*(MAX_X - MIN_X)/4; // random y value
-        this.mvalues[0] = (Math.random() - 0.5) * VOLATILITY; // random slope
+        this.yvalues[0] = (Math.random() - 0.5)*(MAX_X - MIN_X)/2; // random y value
+        this.mvalues[0] = (Math.random() - 0.5) * 5 * VOLATILITY; // random slope
         for(let i = 0; i < coarseLabels.length - 1; i++) {
             this.yvalues[i + 1] = this.mvalues[i] * (1) + this.yvalues[i];
             this.mvalues[i + 1] = this.mvalues[i] + (Math.random() - 0.5) * VOLATILITY;
