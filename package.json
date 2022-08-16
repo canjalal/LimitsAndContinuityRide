@@ -4,7 +4,8 @@
   "description": "An app to explore limits and continuity",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "webpack --watch --mode=development",
+    "build": "webpack --mode=production"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "@babel/core": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "babel-loader": "^8.2.5",
+    "chart.js": "^3.9.1",
     "core-js": "^3.24.1",
     "css-loader": "^6.7.1",
     "mini-css-extract-plugin": "^2.6.1",
@@ -32,9 +34,5 @@
   },
   "browserslist": [
     "defaults"
-  ],
-  "scripts": {
-    "watch": "webpack --watch --mode=development",
-    "build": "webpack --mode=production"
-  }
+  ]
 }

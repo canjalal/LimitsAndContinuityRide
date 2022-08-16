@@ -14,6 +14,7 @@
 .right-bar {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .right-bar > li {
@@ -127,4 +128,9 @@
   background: url("../src/WalkingGirl2.png");
   background-size: 80px;
   background-position: bottom 52px right -4px;
+}
+
+#status-bar {
+  text-align: center;
+  border: 3px dotted gray;
 }

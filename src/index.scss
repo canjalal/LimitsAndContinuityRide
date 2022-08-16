@@ -11,6 +11,7 @@
 .right-bar {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .right-bar > li {
@@ -139,3 +140,8 @@
 // #image:hover {
 //     background-position : bottom 52px right 60px;
 // }
+
+#status-bar {
+    text-align: center;
+    border: 3px dotted gray; 
+}

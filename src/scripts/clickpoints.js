@@ -51,6 +51,8 @@ export class ClickPoint {
     //     <li id="funcValue">Function Value</li>
     //     <li id="continuity">Continuity</li>
     //   </ul>
+
+        const statusBar = document.getElementById('status-bar');
         const newRightBar = document.createElement('ul');
         newRightBar.className = 'right-bar';
 
@@ -60,42 +62,44 @@ export class ClickPoint {
         ptLabel.id = 'ptLabel';
         ptLabel.innerText = `x = ${this.x}`;
         ptLabel.addEventListener('click', (event)=> {
-            console.log("You clicked me!");
+            statusBar.innerText = "You clicked me!";
         });
 
         const lhLimit = document.createElement('li');
         lhLimit.id = 'lhLimit';
         lhLimit.innerText = 'Left-hand Limit';
         lhLimit.addEventListener('click', (event)=> {
-            console.log(this.findLHL());
+            statusBar.innerText = `At x = ${this.x}, the left-handed limit is ${this.findLHL()}`;
         });
 
         const rhLimit = document.createElement('li');
         rhLimit.id = 'rhLimit';
         rhLimit.innerText = 'Right-hand Limit';
         rhLimit.addEventListener('click', (event)=> {
-            console.log(this.findRHL());
+            statusBar.innerText = `At x = ${this.x}, the right-handed limit is ${this.findRHL()}`;
         });
 
         const fullLimit = document.createElement('li');
         fullLimit.id = 'rhLimit';
         fullLimit.innerText = 'Full Limit';
         fullLimit.addEventListener('click', (event)=> {
-            console.log(this.findfullL());
+            statusBar.innerText = `At x = ${this.x}, the full limit is ${this.findfullL() || 'undefined'}`;
         });
 
         const funcValue = document.createElement('li');
         funcValue.id = 'funcValue';
         funcValue.innerText = 'Function Value';
         funcValue.addEventListener('click', (event)=> {
-            console.log(this.findF());
+            statusBar.innerText = `At x = ${this.x}, the function value is ${this.findF() || 'undefined'}`;
+
         });
 
         const continuity = document.createElement('li');
         continuity.id = 'continuity';
         continuity.innerText = 'Continuity';
         continuity.addEventListener('click', (event)=> {
-            console.log(this.isContinuous());
+            statusBar.innerText = `At x = ${this.x}, the function is ${this.isContinuous() ? '' : 'not'} continuous`;
+
         });
 
         newRightBar.appendChild(ptLabel);
