@@ -2,6 +2,8 @@
 const TestData = require("./scripts/testdata.js");
 const { MathFunction, coarseLabels, fineLabels } = require("./scripts/mathfunction");
 const { regNode, vertAsympNode, removDisNode, justDisNode } = require("./scripts/pointnode");
+const { ClickPoint, drawVertLine } = require("./scripts/clickpoints");
+const { animateLeft, animateRight, stopAnimation } = require("./scripts/animate.js");
 window.MathFunction = MathFunction;
 window.TestData = TestData;
 // window.myChart = myChart;
@@ -48,80 +50,95 @@ import {
     SubTitle
   );
 
-  function clickHandler(click) { // click is an event
-      const points = myChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
-  }
+  export const imageL = document.getElementById("imageL");
+  export const previewRight = document.getElementsByClassName('preview-right')[0];
+  export const ptLabel = document.getElementById("ptLabel");
+
+  export const rightBar = document.getElementsByClassName("right-bar")[0];
+
+
+  imageL.addEventListener('mouseover', animateLeft.bind(imageL));
+  imageL.addEventListener('mouseout', animateLeft.bind(imageL));
+//   imageR.addEventListener('click', animateLeft.bind(imageR));
+
+function clickHandler(click, mathF) {
+    const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
+    if(points.length) {
+        const firstPoint = points[0];
+        // console.log(firstPoint);
+        const value = this.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+        // console.log(firstPoint.datasetIndex);
+
+        if(firstPoint.datasetIndex !== 0) {
+            // console.log(value.type);
+            // console.log(value.x)
+            rightBar.style.display = 'flex';
+            previewRight.style.display = 'none';
+            ptLabel.innerHTML = `x = ${value.x}`;
+
+            let clickpt = new ClickPoint(mathF, value.x);
+            console.log(clickpt);
+        }
+        // console.log(value.y);
+    } else {
+        rightBar.style.display = 'none';
+        previewRight.style.display = 'flex';
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
+    let splashscreen = document.getElementsByClassName('splash-screen')[0];    
+
     const mainCanvas = document.getElementById('main-canvas');
     mainCanvas.width = 800;
     mainCanvas.height = 600;
     mainCanvas.style.width  = '800px';
     mainCanvas.style.height = '600px';
     const ctx = mainCanvas.getContext('2d');
-    console.log(ctx);
+
+    // show preview pane and hide feature pane
+    previewRight.style.display = 'flex';
+    rightBar.style.display = 'none';
+    // console.log(ctx);
 
     const testf = new MathFunction();
     // console.log(testf.generatefineData().length);
-
-    function drawVertLine(chart, x) {
-
-            let ctx = chart.ctx;
-
-            let xAxis = chart.scales.x
-            let yAxis = chart.scales.y;
-
-            let xpos = xAxis.getPixelForValue(x);
-            // console.log(xpos);
-            ctx.save();
-            ctx.font = '18px sans-serif';
-            ctx.fillText(`x = ${x}`, xpos - 18, yAxis.bottom - 10);
-            ctx.beginPath();
-            ctx.setLineDash([5, 15]);
-            ctx.moveTo(xpos, yAxis.top);
-            ctx.lineTo(xpos, yAxis.bottom);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
-            ctx.stroke();
-            ctx.restore();
-            ctx.setLineDash([]);
-
-    }
-
-
+    setTimeout(() => {
+        splashscreen.style.display = 'none';
+    }, 0);
     const myChart = new Chart(ctx, {
         type: 'scatter',
         plugins: [{
             afterDraw: chart => {
 
                 testf.generateHoles().forEach((ele) => {
-                    if(ele.type === 'vertAsymp') drawVertLine(chart, ele.x);
+                    if(ele.type === 'vertAsymp') drawVertLine.bind(myChart)(ele.x);
 
-                });
+                }); // Draw vertical asymptotes
 
-                // for(let x = i)
-              if (chart.tooltip?._active?.length) {
-                let x = chart.tooltip._active[0].element.x;
-                let y = chart.tooltip._active[0].element.y;
-                let elem = chart.tooltip._active[0].element.$context.raw;
+            //   if (chart.tooltip?._active?.length) {
+            //     let x = chart.tooltip._active[0].element.x;
+            //     let y = chart.tooltip._active[0].element.y;
+            //     let elem = chart.tooltip._active[0].element.$context.raw;
 
 
-                // console.log(chart.tooltip._active[0].element.$context);
-                // if(x) {
-                //     let yAxis = chart.scales.y;
-                //     let ctx = chart.ctx;
-                //     ctx.save();
-                //     ctx.fillText(`x = ${elem.x}`, x, yAxis.bottom);
-                //     ctx.beginPath();
-                //     ctx.moveTo(x, yAxis.top);
-                //     ctx.lineTo(x, yAxis.bottom);
-                //     ctx.lineWidth = 2;
-                //     ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
-                //     ctx.stroke();
-                //     ctx.restore();
-                // }
+            //     // console.log(chart.tooltip._active[0].element.$context);
+            //     // if(x) {
+            //     //     let yAxis = chart.scales.y;
+            //     //     let ctx = chart.ctx;
+            //     //     ctx.save();
+            //     //     ctx.fillText(`x = ${elem.x}`, x, yAxis.bottom);
+            //     //     ctx.beginPath();
+            //     //     ctx.moveTo(x, yAxis.top);
+            //     //     ctx.lineTo(x, yAxis.bottom);
+            //     //     ctx.lineWidth = 2;
+            //     //     ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
+            //     //     ctx.stroke();
+            //     //     ctx.restore();
+            //     // }
 
-              }
+            //   }
             }
           }],
         data: {
@@ -160,8 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
             borderWidth: 3,
             borderColor: "rgba(0, 0, 0, 1)"
         }
-
-        
         
         ]
         },
@@ -174,23 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     min: -10,
                     afterBuildTicks: axis => axis.ticks = coarseLabels.map(v => ({ value: v })),
-                    ticks: {
-                    // callback: function(value, index, values) {
-                    //     return this.getLabelForValue(value);
-                    //         }
-                        // maxTicksLimit: coarseLabels.length,
-                        // stepSize: 1,
-                        // autoSkip: false,
-                        // callback: value => coarseLabels.includes(value) ? value : ''
-
-
-                        // source: 'data'
-                    }
+                    // ticks: {
+                    // }
 
                 }
-            //     y: {
-            //         beginAtZero: true
-            //     }
             },
 
             elements: {
@@ -205,22 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log(myChart);
 
-    function clickHandler(click) {
-        const points = myChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
-        if(points.length) {
-            const firstPoint = points[0];
-            console.log(firstPoint);
-            const value = myChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-            // console.log(firstPoint.datasetIndex);
 
-            if(firstPoint.datasetIndex !== 0) {
-                console.log(value.type);
-            }
-            // console.log(value.y);
-        }
-    }
+    mainCanvas.addEventListener('click', (click) => {
+        clickHandler.bind(myChart)(click, testf);
+    });
 
-    document.addEventListener('click', clickHandler);
+
 
     // drawVertLine(myChart, 5);
 

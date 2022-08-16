@@ -13,9 +13,28 @@
 </head>
 <body>
   <h1 id="heading-main">Mi proyecto</h1>
-  <div class="canvas-container">
+  <div class="full-size">
+  <!-- <div class="canvas-container"> -->
     <canvas id="main-canvas"></canvas>
+  <!-- </div> -->
+  <ul class="right-bar">
+    <li id="ptLabel"></li>
+    <li id="lhLimit">Left-hand Limit</li>
+    <li id="rhLimit">Right-hand Limit</li>
+    <li id="fullLimit">Full Limit</li>
+    <li id="funcValue">Function Value</li>
+    <li id="continuity">Continuity</li>
+  </ul>
+  <div class="preview-right">
+    <p>
+      Click a point on the graph to check it out!
+    </p>
+    </div>
   </div>
+  <div class="splash-screen">
+  <h1>Welcome to the Limits and Continuity Ride!</h1>
+  <p>Click a point on the graph to analyze its features</p>
+</div>
     
     <!-- <script>
         const myChart = new Chart(
@@ -23,5 +42,9 @@
           config
         );
       </script> -->
+      <div id="demo">
+        <p id="imageL">
+        </p>
+        </div>
 </body>
 </html>

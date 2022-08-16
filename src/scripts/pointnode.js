@@ -38,7 +38,7 @@ class regNode extends PointNode {
     generatefineY() {
         this.yValues = new Array();
         let mNext = this.next.m;
-        if(this.next instanceof vertAsympNode) {
+        if(this.next instanceof vertAsympNode && Math.random() > 0.33) { // some vertical asymptotes are only one-way
             for(let x of this.fineX) {
                 // this.yValues.push(2*this.m  / (2*Math.PI) * Math.tan(Math.PI*x / 2) + this.y); // generate linear values (for now)
                 this.yValues.push(Math.sign(mNext) * Math.log(1 - x) + (this.m + 1 * Math.sign(mNext)) * x + this.y)
@@ -78,7 +78,8 @@ class removDisNode extends PointNode {
     constructor(x, y, m) {
         super(x, y, m, "removeable");
                 // generate a jump of random sign that is between one and two
-        this.yFilled = y + PointNode.randomJump(VOLATILITY, 1); // y-value is defined but not at y-unfilled, otherwise same as regNode
+        if(Math.random() > 0.33 ) this.yFilled = y + PointNode.randomJump(VOLATILITY, 1); // y-value is defined but not at y-unfilled, otherwise same as regNode
+        // <-- some removeable discontinuities dont have a value
         this.yunFilled = y;
     }
     generatefineY() {

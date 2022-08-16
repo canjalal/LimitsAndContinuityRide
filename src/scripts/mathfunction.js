@@ -71,7 +71,6 @@ export class MathFunction {
                 prevnode.next = currnode;
                 prevnode = currnode;
 
-
             }
 
         }
@@ -106,6 +105,8 @@ export class MathFunction {
 
         }
 
+        dataSet.shift();
+        dataSet.pop(); // take off endpoints
         return dataSet;
     }
 
