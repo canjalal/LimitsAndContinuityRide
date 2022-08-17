@@ -37,7 +37,7 @@ export function drawHorizLine(y) {
     // console.log(xpos);
     ctx.save();
     ctx.font = '18px sans-serif';
-    ctx.fillText(`y = ${y}`, ypos - 18, xAxis.left - 10);
+    ctx.fillText(`y = ${y.toFixed(2)}`, xAxis.left + 10, ypos - 18);
     ctx.beginPath();
     ctx.setLineDash([5, 15]);
     ctx.moveTo(xAxis.right, ypos);
@@ -163,6 +163,7 @@ export class ClickPoint {
             const a = new Ashley(0, 0, this.chart);
             a.animatelhL(this).then((res) => {
                 a.destroy();
+                this.chart.update();
             })
             statusBar.innerText = `At x = ${this.x}, the left-handed limit is ${this.lhL}`;
         });
@@ -171,6 +172,7 @@ export class ClickPoint {
             const a = new Ashley(0, 0, this.chart);
             a.animaterhL(this).then((res) => {
                 a.destroy();
+                this.chart.update();
             });
             statusBar.innerText = `At x = ${this.x}, the right-handed limit is ${this.rhL}`;
         });
@@ -179,6 +181,7 @@ export class ClickPoint {
             const a = new Ashley(0, 0, this.chart);
             a.animatefullL(this).then((res)=> {
                 a.destroy();
+                this.chart.update();
             });
             statusBar.innerText = `At x = ${this.x}, the full limit is ${this.fullL}`;
         });
@@ -187,6 +190,7 @@ export class ClickPoint {
             const a = new Ashley(0, 0, this.chart);
             a.animateFuncValue(this).then((res) => {
                 a.destroy();
+                this.chart.update();
             });
             statusBar.innerText = `At x = ${this.x}, the function value is ${this.fValue}`;
         });

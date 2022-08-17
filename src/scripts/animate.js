@@ -154,6 +154,8 @@ export class Ashley {
         }
         let ycoords = clickPt.leftData;
 
+        drawHorizLine.call(this.chart, clickPt.findLHL());
+
         let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
         // console.log(currx);
@@ -162,7 +164,7 @@ export class Ashley {
         while(currpos[0] < clickPt.x) {
 
             currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
-            this.chart.update();
+            // this.chart.update();
             i += 1;
         }
         // console.log(this.chart);
@@ -185,6 +187,9 @@ export class Ashley {
 
         ycoords.reverse();
 
+        drawHorizLine.call(this.chart, clickPt.findRHL());
+
+
         let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
         // console.log(currx);
@@ -193,7 +198,7 @@ export class Ashley {
         while(currpos[0] > clickPt.x + FINE_GRAIN) {
 
             currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
-            this.chart.update();
+            // this.chart.update();
             i += 1;
         }
         // console.log(this.chart);
@@ -327,6 +332,7 @@ export class Ashley {
 
     movewithDelay(x, y, delay) {
         return new Promise(resolve => {
+            // this.chart.update();
             setTimeout(() => {
                 this.setLocation(x, y);
                 resolve([x, y]);
