@@ -27,8 +27,10 @@
 }
 
 .splash-screen {
-    width: 1024px;
-    height: 720px;
+    --width: 800px;
+    width: var(--width);
+    --height: 600px;
+    height: var(--height);
     background-color: lightcyan;
     font-size: 36pt;
     color: violet;
@@ -37,8 +39,8 @@
     justify-content:space-evenly;
     align-content: space-between;
     position: absolute;
-    top: 0.5vh;
-    left: 0.5vw;
+    top: calc(50% - var(--height) / 2);
+    left: calc(50% - var(--width) / 2);
     text-align: center;
 }
 
