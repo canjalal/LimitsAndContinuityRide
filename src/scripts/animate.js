@@ -310,81 +310,87 @@ export class Ashley {
     }
 
     async animateContinuity(clickPt) {
+        if(clickPt.findLHL()) {
+            let xcoords = [];
 
-        let xcoords = [];
-
-        for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
-            xcoords.push(i);
-        }
-        let ycoords = clickPt.leftData;
-
-        let currpos = this.setLocation(xcoords[1], ycoords[1]);
-
-        // console.log(currx);
-
-        let i = 1;
-        while(currpos[0] < clickPt.x) {
-
-            currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10);
-            this.chart.update();
-            i += 1;
-        }
-        // console.log(this.chart);
-
-        // drawVertLine.call(this.chart, currx);
-        // drawHorizLine.call(this.chart, currx[1]);
-        // return [ycoords[ycoords.length - 2], ycoords[ycoords.length - 1]]; // last two points to get slope
-
-        let xi = clickPt.x;
-        let yi = ycoords[ycoords.length - 1]
-
-        if(!clickPt.isContinuous()) {
-
-            // let m = ycoords[ycoords.length - 1] - ycoords[ycoords.length - 2];
-            // m = Math.min(m * 0.8, 0.05);
-
-            let m = 0.0;
-            yi -= (this.chart.scales.y.max - this.chart.scales.y.min) / 200; // not physics-true, but make the person
-                                                                                // go down after the hole
-            currpos = this.setLocation(xi, yi);
-            // console.log(m);
-
-            let yf = this.chart.scales.y.min;
-
-            while(currpos[1] > yf) {
-
-                currpos = await this.movewithDelay(xi, yi, 10);
-                this.chart.update();
-                m -= 0.001;
-                xi += FINE_GRAIN;
-    
-                yi += m;
-            }
-            
-        } else {
-
-            xcoords = [];
-
-            for(let i = clickPt.x; i < clickPt.x + 1; i += FINE_GRAIN) {
+            for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
                 xcoords.push(i);
             }
-            ycoords = clickPt.rightData;
-    
-            currpos = this.setLocation(xcoords[1], ycoords[1]);
-    
+            let ycoords = clickPt.leftData;
+
+            let currpos = this.setLocation(xcoords[1], ycoords[1]);
+
             // console.log(currx);
-    
+
             let i = 1;
-            while(currpos[0] < clickPt.x + 0.5) {
-    
-                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2* i);
+            while(currpos[0] < clickPt.x) {
+
+                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10);
                 this.chart.update();
                 i += 1;
             }
+            // console.log(this.chart);
 
-        }
+            // drawVertLine.call(this.chart, currx);
+            // drawHorizLine.call(this.chart, currx[1]);
+            // return [ycoords[ycoords.length - 2], ycoords[ycoords.length - 1]]; // last two points to get slope
 
-        currpos = await this.movewithDelay(xi, yi, 1000);
+            let xi = clickPt.x;
+            let yi = ycoords[ycoords.length - 1]
+
+            if(!clickPt.isContinuous()) {
+
+                // let m = ycoords[ycoords.length - 1] - ycoords[ycoords.length - 2];
+                // m = Math.min(m * 0.8, 0.05);
+
+                let m = 0.0;
+                yi -= (this.chart.scales.y.max - this.chart.scales.y.min) / 200; // not physics-true, but make the person
+                                                                                    // go down after the hole
+                currpos = this.setLocation(xi, yi);
+                // console.log(m);
+
+                let yf = this.chart.scales.y.min;
+
+                while(currpos[1] > yf) {
+
+                    currpos = await this.movewithDelay(xi, yi, 10);
+                    this.chart.update();
+                    m -= 0.001;
+                    xi += FINE_GRAIN;
+        
+                    yi += m;
+                }
+                
+            } else {
+
+                xcoords = [];
+
+                for(let i = clickPt.x; i < clickPt.x + 1; i += FINE_GRAIN) {
+                    xcoords.push(i);
+                }
+                ycoords = clickPt.rightData;
+        
+                currpos = this.setLocation(xcoords[1], ycoords[1]);
+        
+                // console.log(currx);
+        
+                let i = 1;
+                while(currpos[0] < clickPt.x + 0.5) {
+        
+                    currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2* i);
+                    this.chart.update();
+                    i += 1;
+                }
+
+            }
+
+            currpos = await this.movewithDelay(xi, yi, 1000);
+
+
+        } else {
+            await this.animatelhL(clickPt);
+        }  
+
 
     }
 
