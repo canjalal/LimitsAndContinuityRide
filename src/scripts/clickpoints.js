@@ -86,10 +86,6 @@ export class ClickPoint {
         }
     }
 
-    // set lhL(val) {
-    //     this._lHL = val;
-    // }
-
     get rhL() {
         if(this._rhL) {
             return this._rhL.toFixed(2);
@@ -97,10 +93,6 @@ export class ClickPoint {
             return "undefined";
         }
     }
-
-    // set rhL(val) {
-    //     this._rHL = val;
-    // }
 
     get fullL() {
         if(this._fullL) {
@@ -110,10 +102,6 @@ export class ClickPoint {
         }
     }
 
-    // set fullL(val) {
-    //     this._fullL = val; 
-    // }
-
     get fValue() {
         if(this._fValue) {
             return this._fValue.toFixed(2);
@@ -122,10 +110,6 @@ export class ClickPoint {
         }
     }
 
-    // set fValue(val) {
-    //     this._fValue = val; 
-    // }
-
     get continuity() {
         if(this._isContinuous) {
             return "continuous";
@@ -133,11 +117,6 @@ export class ClickPoint {
             return "not continuous";
         }
     }
-
-    // set isContinuous(val) {
-    //     this._isContinuous = val; 
-    // }
-
 
     generateLI(id, innerText, parent, callback) { // edit to instead have the name of a method of Ashley
         const newLI = document.createElement('li');

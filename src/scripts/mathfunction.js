@@ -23,13 +23,9 @@ export class MathFunction {
   }
 
   generatefineData() {
-    // let currnode = this.pNode.next;
     let outputarray = [];
     outputarray.push(...this.pNode.yValues);
-    // while (currnode) {
-    //   outputarray.push(...currnode.yValues);
-    //   currnode = currnode.next;
-    // }
+
     this.forEachNode((prevnode, currnode) => {
         outputarray.push(...currnode.yValues);
     });
@@ -54,52 +50,29 @@ export class MathFunction {
     let currnode;
 
     for (let i = 1; i < coarseLabels.length; i++) {
+        let args = [coarseLabels[i], this.yvalues[i], this.mvalues[i]];
       if (i % 2 === 0) {
-        currnode = new regNode(
-          coarseLabels[i],
-          this.yvalues[i],
-          this.mvalues[i]
-        );
-        // currnode.generatefineY();
+        currnode = new regNode(...args);
+
       } else {
         let currtype = POINT_TYPES[Math.floor(Math.random() * 5)];
         switch (currtype) {
           case "regular":
-            currnode = new regNode(
-              coarseLabels[i],
-              this.yvalues[i],
-              this.mvalues[i]
-            );
+            currnode = new regNode(...args);
             break;
           case "vertAsymp":
-            currnode = new vertAsympNode(
-              coarseLabels[i],
-              this.yvalues[i],
-              this.mvalues[i]
-            );
+            currnode = new vertAsympNode(...args);
             // render vertical lines
             break;
           case "removeable":
-            currnode = new removDisNode(
-              coarseLabels[i],
-              this.yvalues[i],
-              this.mvalues[i]
-            );
+            currnode = new removDisNode(...args);
 
             break;
           case "jumpDisc":
-            currnode = new jumpDisNode(
-              coarseLabels[i],
-              this.yvalues[i],
-              this.mvalues[i]
-            );
+            currnode = new jumpDisNode(...args);
             break;
           case "blankGap":
-            currnode = new BlankNode(
-              coarseLabels[i],
-              this.yvalues[i],
-              this.mvalues[i]
-            );
+            currnode = new BlankNode(...args);
         }
 
       }
@@ -119,36 +92,7 @@ export class MathFunction {
     let dataSet = [];
 
     if (this.pNode) {
-    //   let currnode = this.pNode;
-
-    //   for (let i = 0; i < coarseLabels.length; i++) {
-    //     // let currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
-    //     if (currnode.yFilled)
-    //       dataSet.push({
-    //         x: coarseLabels[i],
-    //         y: currnode.yFilled,
-    //         type: currnode.type,
-    //       });
-    //     currnode = currnode.next;
-        let i = 0;
-
-        if (this.pNode.yFilled)
-            dataSet.push({
-            x: coarseLabels[i],
-            y: this.pNode.yFilled,
-            type: this.pNode.type,
-          });
-
-        this.forEachNode((prevnode, currnode) => {
-            i++;
-            if (currnode.yFilled)
-            dataSet.push({
-            x: coarseLabels[i],
-            y: currnode.yFilled,
-            type: currnode.type,
-          });
-
-        });
+        dataSet = this.populateData('yFilled');
 
         dataSet.shift();
         dataSet.pop(); // take off endpoints
@@ -161,42 +105,26 @@ export class MathFunction {
   populateData(property) {
     let dataSet = [];
 
-    if (this.pNode) {
-    //   let currnode = this.pNode;
+    let i = 0;
 
-    //   for (let i = 0; i < coarseLabels.length; i++) {
-    //     // let currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
-    //     if (currnode.yFilled)
-    //       dataSet.push({
-    //         x: coarseLabels[i],
-    //         y: currnode.yFilled,
-    //         type: currnode.type,
-    //       });
-    //     currnode = currnode.next;
-        let i = 0;
-
-        if (this.pNode.yFilled)
-            dataSet.push({
-            x: coarseLabels[i],
-            y: this.pNode.yFilled,
-            type: this.pNode.type,
-          });
-
-        this.forEachNode((prevnode, currnode) => {
-            i++;
-            if (currnode.yFilled)
-            dataSet.push({
-            x: coarseLabels[i],
-            y: currnode.yFilled,
-            type: currnode.type,
-          });
-
+    if (this.pNode[property] !== undefined)
+        dataSet.push({
+        x: coarseLabels[i],
+        y: this.pNode[property],
+        type: this.pNode.type,
         });
 
-        dataSet.shift();
-        dataSet.pop(); // take off endpoints
-        return dataSet;
-    }
+    this.forEachNode((prevnode, currnode) => {
+        i++;
+        if (currnode[property] !== undefined)
+        dataSet.push({
+        x: coarseLabels[i],
+        y: currnode[property],
+        type: currnode.type,
+        });
+
+    });
+    return dataSet;
 
 
   }
@@ -205,19 +133,7 @@ export class MathFunction {
     let dataSet = [];
 
     if (this.pNode) {
-      let currnode = this.pNode;
-
-      // prevnode = currnode;
-
-      for (let i = 0; i < coarseLabels.length; i++) {
-        if (currnode.yunFilled)
-          dataSet.push({
-            x: coarseLabels[i],
-            y: currnode.yunFilled,
-            type: currnode.type,
-          });
-        currnode = currnode.next;
-      }
+        dataSet = this.populateData('yunFilled');
     }
 
     return dataSet;
