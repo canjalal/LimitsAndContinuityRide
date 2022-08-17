@@ -7,6 +7,8 @@ import {
   vertAsympNode,
 } from "./pointnode";
 
+// import { LineDrawer } from "./linedrawer";
+
 export class MathFunction {
   constructor() {
     this.yvalues = []; // y-values

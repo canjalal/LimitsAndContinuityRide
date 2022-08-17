@@ -1,80 +1,15 @@
 import { FINE_GRAIN } from './mathfunction';
 import { drawHorizLine, drawVertLine } from './clickpoints'
+import { drawTempLines } from './clickpoints';
 
-export const animateRight = animates('startR');
-
-export const animateLeft = animates('startL');
-
-export const stopAnimation = animates('stop');
-
-function animates(action) {
-
-    const interval = 100;
-    let startpos = -2;
-
-    let timer = null;
-
-    let isRunning = false;
-
-    function spritePos(i) {
-        return startpos + (i % 4) * 21;
-    }
-
-    switch (action) {
-        case 'startL':
-            return function() {
-                console.log("Again");
-                // isRunning = true;
-                this.style.transform = 'scaleX(1)';
-                let i = 0;
-                if(isRunning) {
-                    clearInterval(timer);
-                    isRunning = false;
-                } else {
-                    timer = setInterval(() => {
-                        this.style.backgroundPosition = `bottom 54px right ${spritePos(i)}px`;
-                        i++;
-                    }, interval);
-                    isRunning = true;
-                }
-            }
-            break;
-        case 'startR':
-            return function() {
-                this.style.transform = 'scaleX(-1)';
-                let i = 0;
-                if(isRunning) {
-                    clearInterval(timer);
-                    isRunning = false;
-                } else {
-                    timer = setInterval(() => {
-                        this.style.backgroundPosition = `bottom 54px right ${spritePos(i)}px`;
-                        i++;
-                    }, interval);
-                    isRunning = true;
-                }
-            }
-            break;
-        case 'stop':
-            return function() {
-                clearInterval(timer);
-                this.style.backgroundPosition = `bottom 52px right ${startpos}px`;
-            }
-            break;
-    }
-
-
-
-}
-
-        // size of image is currently hard-coded to be 15px by 22px, this needs to be changed in index.scss as well
+// size of image is currently hard-coded to be 15px by 22px, this needs to be changed in index.scss as well
 
 const A_WIDTH = 15;
 const A_HEIGHT = 22;
 
 export class Ashley {
-    constructor(xi, yi, chart) { // refactor to remove xi and yi bc they aren't needed
-
+    constructor(xi, yi, chart, ld) { // refactor to remove xi and yi bc they aren't needed
+        this.ld = ld;
         this.chart = chart;
         this.x = xi;
         this.y = yi;
@@ -108,16 +43,21 @@ export class Ashley {
     }
 
     async animatelhL(clickPt) {
-        // console.log([clickPt.x, clickPt.y]);
-        if(clickPt.findLHL()) {
-            let xcoords = [];
 
+        let lhL = clickPt.findLHL();
+        this.ld.addHorizLine(lhL);
+        this.ld.addVertLine(clickPt.x);
+        // console.log([clickPt.x, clickPt.y]);
+        if(lhL !== null) {
+            let xcoords = [];
             for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
                 xcoords.push(i);
             }
             let ycoords = clickPt.leftData;
-    
-            drawHorizLine.call(this.chart, clickPt.findLHL());
+            // console.log(clickPt.findLHL())
+
+            // drawHorizLine.call(this.chart, clickPt.findLHL());
+
     
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
     
@@ -125,8 +65,9 @@ export class Ashley {
     
             let i = 1;
             while(currpos[0] < clickPt.x) {
-    
-                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
+                await drawTempLines.call(this.chart, ...currpos);
+                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 5 + i);
+
                 // this.chart.update();
                 i += 1;
             }
@@ -146,8 +87,7 @@ export class Ashley {
     
             while(currpos[1] > yf) {
     
-                currpos = await this.movewithDelay(xi, yi, 10);
-                this.chart.update();
+                currpos = await this.movewithDelay(xi, yi, 5);
                 v -= 0.001;
     
                 yi += v;
@@ -162,6 +102,9 @@ export class Ashley {
 
         }
 
+        this.ld.removeHorizLine(lhL);
+        this.ld.removeVertLine(clickPt.x);
+
         // console.log(this.chart);
 
         // drawVertLine.call(this.chart, currx);
@@ -170,6 +113,11 @@ export class Ashley {
     }
 
     async animaterhL(clickPt) {
+
+        let rhL = clickPt.findRHL()
+        this.ld.addHorizLine(rhL);
+        this.ld.addVertLine(clickPt.x);
+
 
         if(clickPt.findRHL()) {
             this.p.style.transform = 'scaleX(-1)';
@@ -183,7 +131,7 @@ export class Ashley {
     
             ycoords.reverse();
     
-            drawHorizLine.call(this.chart, clickPt.findRHL());
+            // drawHorizLine.call(this.chart, clickPt.findRHL());
     
     
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
@@ -192,8 +140,9 @@ export class Ashley {
     
             let i = 1;
             while(currpos[0] > clickPt.x + FINE_GRAIN) {
+                await drawTempLines.call(this.chart, ...currpos);
     
-                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
+                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 5 + i);
                 // this.chart.update();
                 i += 1;
             }
@@ -203,8 +152,6 @@ export class Ashley {
     
     
             this.p.style.transform = 'scaleX(1)'; // don't forget to reverse this
-    
-            return true;
 
         } else {
 
@@ -222,7 +169,7 @@ export class Ashley {
     
             while(currpos[1] > yf) {
     
-                currpos = await this.movewithDelay(xi, yi, 10);
+                currpos = await this.movewithDelay(xi, yi, 5);
                 // this.chart.update();
                 v -= 0.001;
     
@@ -233,13 +180,19 @@ export class Ashley {
 
         }
 
-    
+        this.ld.removeHorizLine(rhL);
+        this.ld.removeVertLine(clickPt.x);
+
         
     }
 
     async animatefullL(clickPt) {
+        this.ld.addHorizLine(clickPt.findRHL());
         await this.animatelhL(clickPt);
+        this.ld.addHorizLine(clickPt.findLHL());
+        this.ld.removeHorizLine(clickPt.findRHL());
         await this.animaterhL(clickPt);
+        this.ld.removeHorizLine(clickPt.findLHL());
         // console.log(this.chart.scales.y.max);
 
     }
@@ -249,14 +202,14 @@ export class Ashley {
         this.p.style.backgroundSize = '72px';
         this.p.style.backgroundPosition = 'bottom 47px right -1px';
 
+
         let yf = this.chart.scales.y.min;
 
         if(clickPt.node.yFilled === 0) {
             yf = 0;
         } else if(clickPt.node.yFilled) {
             yf = clickPt.node.yFilled;
-            drawHorizLine.call(this.chart, yf);
-
+            this.ld.addHorizLine(yf);
         }
 
         let yi = this.chart.scales.y.max;
@@ -266,14 +219,15 @@ export class Ashley {
         let v = -0.03;
 
         while(currpos[1] > yf) {
-
-            currpos = await this.movewithDelay(xi, yi, 10);
+            await drawTempLines.call(this.chart, ...currpos);
+            currpos = await this.movewithDelay(xi, yi, 5);
             v -= 0.001;
 
             yi += v;
         }
 
         currpos = await this.movewithDelay(xi, yi - v, 1000);
+        this.ld.removeHorizLine(yf); // shouldn't do anything if such line doesn't exist
 
     }
 
@@ -293,8 +247,8 @@ export class Ashley {
             let i = 1;
             while(currpos[0] < clickPt.x) {
 
-                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10);
-                this.chart.update();
+                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 5);
+                // this.chart.update();
                 i += 1;
             }
             // console.log(this.chart);
@@ -320,8 +274,8 @@ export class Ashley {
 
                 while(currpos[1] > yf) {
 
-                    currpos = await this.movewithDelay(xi, yi, 10);
-                    this.chart.update();
+                    currpos = await this.movewithDelay(xi, yi, 5);
+                    // this.chart.update();
                     m -= 0.001;
                     xi += FINE_GRAIN;
         
@@ -344,8 +298,8 @@ export class Ashley {
                 let i = 1;
                 while(currpos[0] < clickPt.x + 0.5) {
         
-                    currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2* i);
-                    this.chart.update();
+                    currpos = await this.movewithDelay(xcoords[i], ycoords[i], 5 + i);
+                    // this.chart.update();
                     i += 1;
                 }
 

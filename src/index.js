@@ -3,7 +3,8 @@ const TestData = require("./scripts/testdata.js");
 const { MathFunction, coarseLabels, fineLabels, MIN_X } = require("./scripts/mathfunction");
 const { regNode, vertAsympNode, removDisNode, justDisNode } = require("./scripts/pointnode");
 const { ClickPoint, drawVertLine } = require("./scripts/clickpoints");
-const { animateLeft, animateRight, stopAnimation, Ashley } = require("./scripts/animate.js");
+const { Ashley } = require("./scripts/animate.js");
+const { LineDrawer } = require ("./scripts/linedrawer");
 window.MathFunction = MathFunction;
 window.TestData = TestData;
 // window.myChart = myChart;
@@ -56,7 +57,7 @@ import {
   export const rightBar = document.getElementsByClassName("right-bar")[0];
 
 
-function clickHandler(click, mathF) {
+function clickHandler(click, mathF, ld) {
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
 
     let newRightBar = document.getElementsByClassName('right-bar')[0];
@@ -75,7 +76,7 @@ function clickHandler(click, mathF) {
             previewRight.style.display = 'none';
             
 
-            let clickpt = new ClickPoint(mathF, value.x, this);
+            let clickpt = new ClickPoint(mathF, value.x, this, ld);
             // console.log(clickpt);
             // a.destroy();
         }
@@ -120,23 +121,11 @@ function loadgraph() {
 
                 }); // Draw vertical asymptotes
 
-            // let ashley = document.getElementById('ashley');
+            let ashley = document.getElementById('ashley');
 
-            // if(ashley) {
-            //     drawVertLine.bind(myChart)(ashley.style.left);
-            //     console.log(ashley.style.left);
-            //     let yAxis = chart.scales.y;
-            //     let ctx = chart.ctx;
-            //     ctx.save();
-            //     ctx.fillText(`x = ${ashley.style.left}`, x, yAxis.bottom);
-            //     ctx.beginPath();
-            //     ctx.moveTo(x, yAxis.top);
-            //     ctx.lineTo(x, yAxis.bottom);
-            //     ctx.lineWidth = 2;
-            //     ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
-            //     ctx.stroke();
-            //     ctx.restore();
-            // }
+            if(ashley) {
+                lineDrawer.drawLines();
+            }
 
             //   if (chart.tooltip?._active?.length) {
             //     let x = chart.tooltip._active[0].element.x;
@@ -233,9 +222,11 @@ function loadgraph() {
 
     console.log(myChart);
 
+    const lineDrawer = new LineDrawer(myChart);
+
 
     mainCanvas.addEventListener('click', (click) => {
-        clickHandler.bind(myChart)(click, testf);
+        clickHandler.bind(myChart)(click, testf, lineDrawer);
     });
 
 

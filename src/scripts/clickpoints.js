@@ -1,7 +1,7 @@
 import {Ashley } from './animate';
 
 
-export function drawVertLine(x) {
+export function drawVertLine(x, dashed = true) {
 
     let ctx = this.ctx;
 
@@ -10,22 +10,36 @@ export function drawVertLine(x) {
 
     let xpos = xAxis.getPixelForValue(x);
     // console.log(xpos);
-    ctx.save();
+    // ctx.save();
     ctx.font = '18px sans-serif';
-    ctx.fillText(`x = ${x}`, xpos - 18, yAxis.bottom - 10);
+    if(dashed) ctx.fillText(`x = ${x.toFixed(2)}`, xpos - 18, yAxis.bottom - 10);
     ctx.beginPath();
-    ctx.setLineDash([5, 15]);
+    if(dashed) ctx.setLineDash([5, 15]);
     ctx.moveTo(xpos, yAxis.top);
     ctx.lineTo(xpos, yAxis.bottom);
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
     ctx.stroke();
-    ctx.restore();
+    // ctx.restore();
     ctx.setLineDash([]);
 
 }
 
-export function drawHorizLine(y) {
+export function drawTempLines(x, y) {
+// needs to be bound to a chart
+    return new Promise(resolve => {
+        this.update();
+        setTimeout(()=> {
+            drawHorizLine.call(this, y, false);
+            drawVertLine.call(this, x, false);
+            resolve(true);
+        }, 0);
+    });
+}
+
+export function drawHorizLine(y, dashed = true) {
+
+    if(y === undefined) return false;
 
     let ctx = this.ctx;
     // console.log(`The context is ${ctx}`);
@@ -35,24 +49,24 @@ export function drawHorizLine(y) {
 
     let ypos = yAxis.getPixelForValue(y);
     // console.log(xpos);
-    ctx.save();
+    // ctx.save();
     ctx.font = '18px sans-serif';
-    ctx.fillText(`y = ${y.toFixed(2)}`, xAxis.left + 10, ypos - 18);
+    if(dashed) ctx.fillText(`y = ${y.toFixed(2)}`, xAxis.left + 10, ypos - 18);
     ctx.beginPath();
-    ctx.setLineDash([5, 15]);
+    if(dashed) ctx.setLineDash([5, 15]);
     ctx.moveTo(xAxis.right, ypos);
     ctx.lineTo(xAxis.left, ypos);
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
     ctx.stroke();
-    ctx.restore();
+    // ctx.restore();
     ctx.setLineDash([]);
 
 }
 export class ClickPoint {
-    constructor(mathF, x, chart) { // take mathF and x value and construct data from prev fine data and current pNode
+    constructor(mathF, x, chart, ld) { // take mathF and x value and construct data from prev fine data and current pNode
         // this.leftData = null;
-
+        this.ld = ld;
         this.chart = chart;
         this.x = x;
         this.mathF = mathF;
@@ -136,9 +150,10 @@ export class ClickPoint {
 
         if(methodName) {
             newLI.addEventListener('click', (event) => {
+                console.log(event.target);
                 // console.log(this.lhL);
                 statusBar.innerText = msgcallback();
-                const a = new Ashley(0, 0, this.chart);
+                const a = new Ashley(0, 0, this.chart, this.ld);
                 a[methodName](this).then((res) => {
                     a.destroy();
                     this.chart.update();
