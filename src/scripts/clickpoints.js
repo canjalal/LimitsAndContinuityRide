@@ -150,13 +150,14 @@ export class ClickPoint {
 
         if(methodName) {
             newLI.addEventListener('click', (event) => {
-                console.log(event.target);
+                parent.style.display = 'none';
                 // console.log(this.lhL);
                 statusBar.innerText = msgcallback();
                 const a = new Ashley(0, 0, this.chart, this.ld);
                 a[methodName](this).then((res) => {
                     a.destroy();
                     this.chart.update();
+                    parent.style.display = 'flex';
                 })
             });
         }
