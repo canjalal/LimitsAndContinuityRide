@@ -260,7 +260,7 @@ export class Ashley {
             while(currpos[1] > yf) {
     
                 currpos = await this.movewithDelay(xi, yi, 10);
-                this.chart.update();
+                // this.chart.update();
                 v -= 0.001;
     
                 yi += v;
@@ -292,6 +292,8 @@ export class Ashley {
             yf = 0;
         } else if(clickPt.node.yFilled) {
             yf = clickPt.node.yFilled;
+            drawHorizLine.call(this.chart, yf);
+
         }
 
         let yi = this.chart.scales.y.max;
@@ -303,7 +305,6 @@ export class Ashley {
         while(currpos[1] > yf) {
 
             currpos = await this.movewithDelay(xi, yi, 10);
-            this.chart.update();
             v -= 0.001;
 
             yi += v;
