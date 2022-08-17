@@ -27,7 +27,7 @@ PointNode.randomJump = function(size, fluct) {
     return randomSign * (size + fluct * Math.random() / 2);
 }
 
-const POINT_TYPES = ['regular', 'vertAsymp', 'removeable', 'jumpDisc'];
+const POINT_TYPES = ['regular', 'vertAsymp', 'removeable', 'jumpDisc', 'blankGap'];
 
 class regNode extends PointNode {
     constructor(x, y, m) {
@@ -132,4 +132,19 @@ class jumpDisNode extends PointNode {
 
 }
 
-export { regNode, vertAsympNode, removDisNode, jumpDisNode, POINT_TYPES };
+class BlankNode extends PointNode {
+    constructor(x, y, m) {
+        super(x, y, m, "blankGap");
+        if(Math.random() > 0.33 ) this.yFilled = y;
+        this.yunFilled = y;
+
+    }
+    generatefineY() {
+        this.yValues = new Array();
+        for(let x of this.fineX) {
+            this.yValues.push(NaN);
+        }
+    }
+}
+
+export { regNode, vertAsympNode, removDisNode, jumpDisNode, BlankNode, POINT_TYPES };

@@ -1,4 +1,4 @@
-import { jumpDisNode, POINT_TYPES, regNode, removDisNode, vertAsympNode } from "./pointnode";
+import { BlankNode, jumpDisNode, POINT_TYPES, regNode, removDisNode, vertAsympNode } from "./pointnode";
 
 export class MathFunction {
     constructor() {
@@ -50,7 +50,7 @@ export class MathFunction {
                 prevnode = currnode;
             } else {
 
-                let currtype = POINT_TYPES[Math.floor(Math.random() * 4)];
+                let currtype = POINT_TYPES[Math.floor(Math.random() * 5)];
                 switch(currtype) {
                     case 'regular':
                         currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
@@ -65,6 +65,9 @@ export class MathFunction {
                         break;
                     case 'jumpDisc':
                         currnode = new jumpDisNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
+                        break;
+                    case 'blankGap':
+                        currnode = new BlankNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
                 }
 
                 // currnode.generatefineY();

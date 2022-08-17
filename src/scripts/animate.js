@@ -146,27 +146,55 @@ export class Ashley {
 
     async animatelhL(clickPt) {
         // console.log([clickPt.x, clickPt.y]);
+        if(clickPt.findLHL()) {
+            let xcoords = [];
 
-        let xcoords = [];
+            for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
+                xcoords.push(i);
+            }
+            let ycoords = clickPt.leftData;
+    
+            drawHorizLine.call(this.chart, clickPt.findLHL());
+    
+            let currpos = this.setLocation(xcoords[1], ycoords[1]);
+    
+            // console.log(currx);
+    
+            let i = 1;
+            while(currpos[0] < clickPt.x) {
+    
+                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
+                // this.chart.update();
+                i += 1;
+            }
+        } else {
 
-        for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
-            xcoords.push(i);
+            this.p.style.background = 'url("./src/WalkingGirlForward.png")';
+            this.p.style.backgroundSize = '72px';
+            this.p.style.backgroundPosition = 'bottom 47px right -1px';
+    
+            let yf = this.chart.scales.y.min;
+    
+            let yi = clickPt.node.y;
+            let xi = clickPt.x - 0.5;
+            let currpos = this.setLocation(xi, yi);
+    
+            let v = -0.03;
+    
+            while(currpos[1] > yf) {
+    
+                currpos = await this.movewithDelay(xi, yi, 10);
+                this.chart.update();
+                v -= 0.001;
+    
+                yi += v;
+            }
+    
+            currpos = await this.movewithDelay(xi, yi - v, 1000);
+
+
         }
-        let ycoords = clickPt.leftData;
 
-        drawHorizLine.call(this.chart, clickPt.findLHL());
-
-        let currpos = this.setLocation(xcoords[1], ycoords[1]);
-
-        // console.log(currx);
-
-        let i = 1;
-        while(currpos[0] < clickPt.x) {
-
-            currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
-            // this.chart.update();
-            i += 1;
-        }
         // console.log(this.chart);
 
         // drawVertLine.call(this.chart, currx);
@@ -176,46 +204,76 @@ export class Ashley {
 
     async animaterhL(clickPt) {
 
-        this.p.style.transform = 'scaleX(-1)';
+        if(clickPt.findRHL()) {
+            this.p.style.transform = 'scaleX(-1)';
 
-        let xcoords = [];
+            let xcoords = [];
+    
+            for(let i = clickPt.x + 1; i > clickPt.x; i -= FINE_GRAIN) {
+                xcoords.push(i);
+            }
+            let ycoords = clickPt.rightData.slice();
+    
+            ycoords.reverse();
+    
+            drawHorizLine.call(this.chart, clickPt.findRHL());
+    
+    
+            let currpos = this.setLocation(xcoords[1], ycoords[1]);
+    
+            // console.log(currx);
+    
+            let i = 1;
+            while(currpos[0] > clickPt.x + FINE_GRAIN) {
+    
+                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
+                // this.chart.update();
+                i += 1;
+            }
+            // console.log(this.chart);
+    
+            // drawVertLine.call(this.chart, currx);
+    
+    
+            this.p.style.transform = 'scaleX(1)'; // don't forget to reverse this
+    
+            return true;
 
-        for(let i = clickPt.x + 1; i > clickPt.x; i -= FINE_GRAIN) {
-            xcoords.push(i);
+        } else {
+
+            this.p.style.background = 'url("./src/WalkingGirlForward.png")';
+            this.p.style.backgroundSize = '72px';
+            this.p.style.backgroundPosition = 'bottom 47px right -1px';
+    
+            let yf = this.chart.scales.y.min;
+    
+            let yi = clickPt.node.y;
+            let xi = clickPt.x + 0.5;
+            let currpos = this.setLocation(xi, yi);
+    
+            let v = -0.03;
+    
+            while(currpos[1] > yf) {
+    
+                currpos = await this.movewithDelay(xi, yi, 10);
+                this.chart.update();
+                v -= 0.001;
+    
+                yi += v;
+            }
+    
+            currpos = await this.movewithDelay(xi, yi - v, 1000);
+
         }
-        let ycoords = clickPt.rightData.slice();
 
-        ycoords.reverse();
-
-        drawHorizLine.call(this.chart, clickPt.findRHL());
-
-
-        let currpos = this.setLocation(xcoords[1], ycoords[1]);
-
-        // console.log(currx);
-
-        let i = 1;
-        while(currpos[0] > clickPt.x + FINE_GRAIN) {
-
-            currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
-            // this.chart.update();
-            i += 1;
-        }
-        // console.log(this.chart);
-
-        // drawVertLine.call(this.chart, currx);
-
-
-    this.p.style.transform = 'scaleX(1)'; // don't forget to reverse this
-
-    return true;
+    
         
     }
 
     async animatefullL(clickPt) {
         await this.animatelhL(clickPt);
         await this.animaterhL(clickPt);
-        console.log(this.chart.scales.y.max);
+        // console.log(this.chart.scales.y.max);
 
     }
 

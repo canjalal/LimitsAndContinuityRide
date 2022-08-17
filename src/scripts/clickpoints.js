@@ -77,7 +77,7 @@ export class ClickPoint {
     }
 
     get lhL() {
-        console.log(this._lhL);
+        // console.log(this._lhL);
         if(this._lhL) {
             return this._lhL.toFixed(2);
 
@@ -215,11 +215,23 @@ export class ClickPoint {
             if(this.leftData[this.leftData.length - 1] < this.leftData[this.leftData.length - 2] - 1) return -Infinity;
             if(Math.abs(this.leftData[this.leftData.length - 1] - this.leftData[this.leftData.length - 2]) < 0.1) return this.node.yunFilled;
         } else if(this.node.type === 'regular') {
+            let prevnode = this.mathF.pNode;
+
+            while(prevnode.next.x !== this.node.x) {
+                prevnode = prevnode.next;
+            }
+            // console.log(prevnode);
+
+            if(prevnode.type === 'blankGap') {
+                return null;
+            }
             return this.node.y;
         } else if(this.node.type === 'removeable') {
             return this.node.yunFilled;
         } else if(this.node.type === 'jumpDisc') {
             return this.node.yFilled;
+        } else if(this.node.type === 'blankGap') {
+            return this.node.yunFilled;
         }
     }
 
@@ -234,6 +246,8 @@ export class ClickPoint {
             return this.node.yunFilled;
         } else if(this.node.type === 'jumpDisc') {
             return this.node.yunFilled;
+        } else if(this.node.type === 'blankGap') {
+            return null;
         }
     }
 
