@@ -3,7 +3,7 @@ const TestData = require("./scripts/testdata.js");
 const { MathFunction, coarseLabels, fineLabels, MIN_X } = require("./scripts/mathfunction");
 const { regNode, vertAsympNode, removDisNode, justDisNode } = require("./scripts/pointnode");
 const { ClickPoint, drawVertLine } = require("./scripts/clickpoints");
-const { animateLeft, animateRight, stopAnimation } = require("./scripts/animate.js");
+const { animateLeft, animateRight, stopAnimation, Ashley } = require("./scripts/animate.js");
 window.MathFunction = MathFunction;
 window.TestData = TestData;
 // window.myChart = myChart;
@@ -50,22 +50,21 @@ import {
     SubTitle
   );
 
-  export const imageL = document.getElementById("imageL");
+//   export const imageL = document.getElementById("imageL");
   export const previewRight = document.getElementsByClassName('preview-right')[0];
   export const ptLabel = document.getElementById("ptLabel");
 
   export const rightBar = document.getElementsByClassName("right-bar")[0];
 
 
-  imageL.addEventListener('mouseover', animateLeft.bind(imageL));
-  imageL.addEventListener('mouseout', animateLeft.bind(imageL));
+//   imageL.addEventListener('mouseover', animateLeft.bind(imageL));
+//   imageL.addEventListener('mouseout', animateLeft.bind(imageL));
 //   imageR.addEventListener('click', animateLeft.bind(imageR));
 
 function clickHandler(click, mathF) {
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
 
     let newRightBar = document.getElementsByClassName('right-bar')[0];
-    console.log(newRightBar);
     if(newRightBar) newRightBar.parentNode.removeChild(newRightBar);
 
 
@@ -81,8 +80,9 @@ function clickHandler(click, mathF) {
             previewRight.style.display = 'none';
             
 
-            let clickpt = new ClickPoint(mathF, value.x);
-            console.log(clickpt);
+            let clickpt = new ClickPoint(mathF, value.x, this);
+            // console.log(clickpt);
+            // a.destroy();
         }
         // console.log(value.y);
     } else {
@@ -120,6 +120,7 @@ function loadgraph() {
             afterDraw: chart => {
 
                 testf.generateHoles().forEach((ele) => {
+                    const statusBar = document.getElementById('status-bar');
                     if(ele.type === 'vertAsymp') drawVertLine.bind(myChart)(ele.x);
 
                 }); // Draw vertical asymptotes
@@ -171,7 +172,8 @@ function loadgraph() {
             borderWidth: 3,
             hitRadius: 2,
             borderColor: "rgba(0, 0, 0, 1)",
-            backgroundColor: "rgba(0, 0, 1)"
+            backgroundColor: "rgba(0, 0, 1)",
+            pointHitRadius: 10 // how close you have to click/tap to register as a click
         },
 
         {
@@ -182,7 +184,8 @@ function loadgraph() {
             pointStyle: 'circle',
             radius: 4,
             borderWidth: 3,
-            borderColor: "rgba(0, 0, 0, 1)"
+            borderColor: "rgba(0, 0, 0, 1)",
+            pointHitRadius: 10
         }
         
         ]

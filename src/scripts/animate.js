@@ -1,19 +1,42 @@
-// export function animateLeft() {
+import { FINE_GRAIN } from './mathfunction';
+import { drawHorizLine, drawVertLine } from './clickpoints'
+/*
 
-//     const interval = 100;
+Information require to animate leftHandLimit:
+- Actual limit as a dashed line at x and y
+- left data
+- Animation happens following an arctan curve as a function of time
+- Pulse limit point
+- Destroy animation
 
-//     let i = 0;
-//     var startpos = -4;
+Information required to animate rightHandLimit:
+- Actual limit as a dashed line at x and y
+- right data
+- Animation happens following a negative arctan curve as a function of time
+- Pulse limit point
+- Destroy animation
 
-//     function spritePos(i) {
-//         return startpos + (i % 4) * 20;
-//     }
+Information required to animate fullLimit:
+Run leftHandLimit, run rightHandLimit, after animation, pulse both points. If they're not equal, they should be red, if equal, they should be green
+- Destroy animation
 
-//     let timer = setInterval(() => {
-//         this.style.backgroundPosition = `bottom 52px right ${spritePos(i)}px`;
-//         i++;
-//     }, interval);
-// }
+Information requireqd to animate funcValue
+- yFilled
+- Animate happens following a parabolic curve as a function of time (assume character is fine landing on her feet), using WalkingGirlForward
+- PUlse function point if it exists. If it doesn't exist, character falls to bottom of graph. Initial velocity zero, initial position at top of graph
+
+Information required to animate Continuity
+- left data
+- right data
+ - yFilled
+
+ If continuous, animation will proceed along x linearly forward.
+ If not continuous, animation will proceed along x linearly forward up to the end of leftData
+ (later on, when blanks are allowed, if not defined on the left, character will fall straight down in middle of leftData)
+ After it hits end of left data, character will follow parabolic curve, with initial velocity proportional to slope between last leftDAta points,
+ but x value will continue to increment at constant speed
+
+*/
 
 export const animateRight = animates('startR');
 
@@ -24,14 +47,14 @@ export const stopAnimation = animates('stop');
 function animates(action) {
 
     const interval = 100;
-    let startpos = -4;
+    let startpos = -2;
 
     let timer = null;
 
     let isRunning = false;
 
     function spritePos(i) {
-        return startpos + (i % 4) * 20;
+        return startpos + (i % 4) * 21;
     }
 
     switch (action) {
@@ -46,7 +69,7 @@ function animates(action) {
                     isRunning = false;
                 } else {
                     timer = setInterval(() => {
-                        this.style.backgroundPosition = `bottom 52px right ${spritePos(i)}px`;
+                        this.style.backgroundPosition = `bottom 54px right ${spritePos(i)}px`;
                         i++;
                     }, interval);
                     isRunning = true;
@@ -62,7 +85,7 @@ function animates(action) {
                     isRunning = false;
                 } else {
                     timer = setInterval(() => {
-                        this.style.backgroundPosition = `bottom 52px right ${spritePos(i)}px`;
+                        this.style.backgroundPosition = `bottom 54px right ${spritePos(i)}px`;
                         i++;
                     }, interval);
                     isRunning = true;
@@ -79,4 +102,239 @@ function animates(action) {
 
 
 
+}
+
+        // size of image is currently hard-coded to be 15px by 22px, this needs to be changed in index.scss as well
+
+const A_WIDTH = 15;
+const A_HEIGHT = 22;
+
+export class Ashley {
+    constructor(xi, yi, chart) { // refactor to remove xi and yi bc they aren't needed
+
+        this.chart = chart;
+        this.x = xi;
+        this.y = yi;
+        let ctx = chart.ctx;
+        this.xAxis = chart.scales.x
+        this.yAxis = chart.scales.y;
+
+        this.p = document.createElement('p');
+        this.p.id = 'ashley';
+
+        // this._xpos = xAxis.getPixelForValue(xi);
+        // this._ypos = yAxis.getPixelForValue(yi);
+
+        // this.p.style.left = `${this._xpos - A_WIDTH / 2}px`;
+        // this.p.style.top = `${this._ypos + A_HEIGHT }px`;
+
+        this.setLocation(xi, yi);
+        document.body.appendChild(this.p);
+
+    }
+
+    setLocation(x, y) {
+
+        this._xpos = this.xAxis.getPixelForValue(x);
+        this._ypos = this.yAxis.getPixelForValue(y);
+
+        this.p.style.left = `${this._xpos - A_WIDTH / 2}px`;
+        this.p.style.top = `${this._ypos + A_HEIGHT }px`;
+
+        return [x, y];
+    }
+
+    async animatelhL(clickPt) {
+        // console.log([clickPt.x, clickPt.y]);
+
+        let xcoords = [];
+
+        for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
+            xcoords.push(i);
+        }
+        let ycoords = clickPt.leftData;
+
+        let currpos = this.setLocation(xcoords[1], ycoords[1]);
+
+        // console.log(currx);
+
+        let i = 1;
+        while(currpos[0] < clickPt.x) {
+
+            currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
+            this.chart.update();
+            i += 1;
+        }
+        // console.log(this.chart);
+
+        // drawVertLine.call(this.chart, currx);
+        // drawHorizLine.call(this.chart, currx[1]);
+        // return [ycoords[ycoords.length - 2], ycoords[ycoords.length - 1]]; // last two points to get slope
+    }
+
+    async animaterhL(clickPt) {
+
+        this.p.style.transform = 'scaleX(-1)';
+
+        let xcoords = [];
+
+        for(let i = clickPt.x + 1; i > clickPt.x; i -= FINE_GRAIN) {
+            xcoords.push(i);
+        }
+        let ycoords = clickPt.rightData.slice();
+
+        ycoords.reverse();
+
+        let currpos = this.setLocation(xcoords[1], ycoords[1]);
+
+        // console.log(currx);
+
+        let i = 1;
+        while(currpos[0] > clickPt.x + FINE_GRAIN) {
+
+            currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
+            this.chart.update();
+            i += 1;
+        }
+        // console.log(this.chart);
+
+        // drawVertLine.call(this.chart, currx);
+
+
+    this.p.style.transform = 'scaleX(1)'; // don't forget to reverse this
+
+    return true;
+        
+    }
+
+    async animatefullL(clickPt) {
+        await this.animatelhL(clickPt);
+        await this.animaterhL(clickPt);
+        console.log(this.chart.scales.y.max);
+
+    }
+
+    async animateFuncValue(clickPt) {
+        this.p.style.background = 'url("./src/WalkingGirlForward.png")';
+        this.p.style.backgroundSize = '72px';
+        this.p.style.backgroundPosition = 'bottom 47px right -1px';
+
+        let yf = this.chart.scales.y.min;
+
+        if(clickPt.node.yFilled === 0) {
+            yf = 0;
+        } else if(clickPt.node.yFilled) {
+            yf = clickPt.node.yFilled;
+        }
+
+        let yi = this.chart.scales.y.max;
+        let xi = clickPt.x;
+        let currpos = this.setLocation(xi, yi);
+
+        let v = -0.03;
+
+        while(currpos[1] > yf) {
+
+            currpos = await this.movewithDelay(xi, yi, 10);
+            this.chart.update();
+            v -= 0.001;
+
+            yi += v;
+        }
+
+        currpos = await this.movewithDelay(xi, yi - v, 1000);
+
+    }
+
+    async animateContinuity(clickPt) {
+
+        let xcoords = [];
+
+        for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
+            xcoords.push(i);
+        }
+        let ycoords = clickPt.leftData;
+
+        let currpos = this.setLocation(xcoords[1], ycoords[1]);
+
+        // console.log(currx);
+
+        let i = 1;
+        while(currpos[0] < clickPt.x) {
+
+            currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10);
+            this.chart.update();
+            i += 1;
+        }
+        // console.log(this.chart);
+
+        // drawVertLine.call(this.chart, currx);
+        // drawHorizLine.call(this.chart, currx[1]);
+        // return [ycoords[ycoords.length - 2], ycoords[ycoords.length - 1]]; // last two points to get slope
+
+        let xi = clickPt.x;
+        let yi = ycoords[ycoords.length - 1]
+
+        if(!clickPt.isContinuous()) {
+
+            // let m = ycoords[ycoords.length - 1] - ycoords[ycoords.length - 2];
+            // m = Math.min(m * 0.8, 0.05);
+
+            let m = 0.0;
+            yi -= (this.chart.scales.y.max - this.chart.scales.y.min) / 200; // not physics-true, but make the person
+                                                                                // go down after the hole
+            currpos = this.setLocation(xi, yi);
+            // console.log(m);
+
+            let yf = this.chart.scales.y.min;
+
+            while(currpos[1] > yf) {
+
+                currpos = await this.movewithDelay(xi, yi, 10);
+                this.chart.update();
+                m -= 0.001;
+                xi += FINE_GRAIN;
+    
+                yi += m;
+            }
+            
+        } else {
+
+            xcoords = [];
+
+            for(let i = clickPt.x; i < clickPt.x + 1; i += FINE_GRAIN) {
+                xcoords.push(i);
+            }
+            ycoords = clickPt.rightData;
+    
+            currpos = this.setLocation(xcoords[1], ycoords[1]);
+    
+            // console.log(currx);
+    
+            let i = 1;
+            while(currpos[0] < clickPt.x + 0.5) {
+    
+                currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2* i);
+                this.chart.update();
+                i += 1;
+            }
+
+        }
+
+        currpos = await this.movewithDelay(xi, yi, 1000);
+
+    }
+
+    movewithDelay(x, y, delay) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                this.setLocation(x, y);
+                resolve([x, y]);
+            }, delay);
+        });
+    }
+
+    destroy() {
+        this.p.parentNode.removeChild(this.p);
+    }
 }

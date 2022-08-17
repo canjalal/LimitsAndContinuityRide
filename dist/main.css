@@ -20,7 +20,7 @@
 .right-bar > li {
   box-sizing: border-box;
   font-weight: bold;
-  margin: 5px 10px 5px 10px;
+  margin: 0px 5px 0px 5px;
   border: 2px solid pink;
   height: 91px;
   width: 108px;
@@ -100,10 +100,10 @@
 
 #ptLabel {
   margin-top: 0px;
-  padding-top: 50px;
   border: none;
   font-size: 14pt;
   cursor: auto;
+  height: 30px;
 }
 
 #main-canvas {
@@ -122,15 +122,34 @@
 }
 
 #imageL {
-  border: 2px solid black;
-  height: 25px;
-  width: 15px;
+  border: 1px solid black;
+  height: 24px;
+  width: 16px;
   background: url("../src/WalkingGirl2.png");
-  background-size: 80px;
-  background-position: bottom 52px right -4px;
+  background-size: 84px;
+  background-position: bottom 54px right -2px;
 }
 
 #status-bar {
   text-align: center;
   border: 3px dotted gray;
+}
+
+#ashley {
+  height: 24px;
+  width: 16px;
+  background: url("../src/WalkingGirl2.png");
+  background-size: 84px;
+  background-position: bottom 54px right -2px;
+  position: absolute;
+  margin: 0px;
+}
+
+#ashleyface {
+  border: 1px solid black;
+  height: 24px;
+  width: 16px;
+  background: url("../src/WalkingGirlForward.png");
+  background-size: 72px;
+  background-position: bottom 47px right -1px;
 }
