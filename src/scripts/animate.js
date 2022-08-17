@@ -192,6 +192,10 @@ export class Ashley {
     
             currpos = await this.movewithDelay(xi, yi - v, 1000);
 
+            this.p.style.background = 'url("./src/WalkingGirl2.png")';
+            this.p.style.backgroundSize = '84px';
+            this.p.style.backgroundPosition = 'bottom 54px right -2px';
+
 
         }
 
@@ -340,10 +344,9 @@ export class Ashley {
 
             if(!clickPt.isContinuous()) {
 
-                // let m = ycoords[ycoords.length - 1] - ycoords[ycoords.length - 2];
-                // m = Math.min(m * 0.8, 0.05);
+                let m = ycoords[ycoords.length - 1] - ycoords[ycoords.length - 2];
+                m = Math.min(m * 0.8, 0);
 
-                let m = 0.0;
                 yi -= (this.chart.scales.y.max - this.chart.scales.y.min) / 200; // not physics-true, but make the person
                                                                                     // go down after the hole
                 currpos = this.setLocation(xi, yi);
