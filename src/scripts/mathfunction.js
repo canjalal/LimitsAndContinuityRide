@@ -119,25 +119,86 @@ export class MathFunction {
     let dataSet = [];
 
     if (this.pNode) {
-      let currnode = this.pNode;
+    //   let currnode = this.pNode;
 
-      // prevnode = currnode;
+    //   for (let i = 0; i < coarseLabels.length; i++) {
+    //     // let currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
+    //     if (currnode.yFilled)
+    //       dataSet.push({
+    //         x: coarseLabels[i],
+    //         y: currnode.yFilled,
+    //         type: currnode.type,
+    //       });
+    //     currnode = currnode.next;
+        let i = 0;
 
-      for (let i = 0; i < coarseLabels.length; i++) {
-        // let currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
-        if (currnode.yFilled)
-          dataSet.push({
+        if (this.pNode.yFilled)
+            dataSet.push({
+            x: coarseLabels[i],
+            y: this.pNode.yFilled,
+            type: this.pNode.type,
+          });
+
+        this.forEachNode((prevnode, currnode) => {
+            i++;
+            if (currnode.yFilled)
+            dataSet.push({
             x: coarseLabels[i],
             y: currnode.yFilled,
             type: currnode.type,
           });
-        currnode = currnode.next;
-      }
+
+        });
+
+        dataSet.shift();
+        dataSet.pop(); // take off endpoints
+        return dataSet;
     }
 
-    dataSet.shift();
-    dataSet.pop(); // take off endpoints
-    return dataSet;
+
+  }
+
+  populateData(property) {
+    let dataSet = [];
+
+    if (this.pNode) {
+    //   let currnode = this.pNode;
+
+    //   for (let i = 0; i < coarseLabels.length; i++) {
+    //     // let currnode = new regNode(coarseLabels[i], this.yvalues[i], this.mvalues[i]);
+    //     if (currnode.yFilled)
+    //       dataSet.push({
+    //         x: coarseLabels[i],
+    //         y: currnode.yFilled,
+    //         type: currnode.type,
+    //       });
+    //     currnode = currnode.next;
+        let i = 0;
+
+        if (this.pNode.yFilled)
+            dataSet.push({
+            x: coarseLabels[i],
+            y: this.pNode.yFilled,
+            type: this.pNode.type,
+          });
+
+        this.forEachNode((prevnode, currnode) => {
+            i++;
+            if (currnode.yFilled)
+            dataSet.push({
+            x: coarseLabels[i],
+            y: currnode.yFilled,
+            type: currnode.type,
+          });
+
+        });
+
+        dataSet.shift();
+        dataSet.pop(); // take off endpoints
+        return dataSet;
+    }
+
+
   }
 
   generateHoles() {

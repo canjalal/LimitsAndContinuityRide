@@ -77,7 +77,6 @@ export class ClickPoint {
     }
 
     get lhL() {
-        // console.log(this._lhL);
         if(this._lhL) {
             return this._lhL.toFixed(2);
 
@@ -140,7 +139,7 @@ export class ClickPoint {
     // }
 
 
-    generateLI(id, innerText, parent, callback) {
+    generateLI(id, innerText, parent, callback) { // edit to instead have the name of a method of Ashley
         const newLI = document.createElement('li');
 
         newLI.id = id;
@@ -149,59 +148,62 @@ export class ClickPoint {
         parent.appendChild(newLI);
     }
 
+    generateLIandEventHandler(id, innerText, parent, msgcallback, methodName) { // edit to instead have the name of a method of Ashley
+        const newLI = document.createElement('li');
+        const statusBar = document.getElementById('status-bar');
+
+        newLI.id = id;
+        newLI.innerText = innerText;
+
+        if(methodName) {
+            newLI.addEventListener('click', (event) => {
+                // console.log(this.lhL);
+                statusBar.innerText = msgcallback();
+                const a = new Ashley(0, 0, this.chart);
+                a[methodName](this).then((res) => {
+                    a.destroy();
+                    this.chart.update();
+                })
+            });
+        }
+        parent.appendChild(newLI);
+
+    }
+
     generaterightBar() {
 
         const statusBar = document.getElementById('status-bar');
         const newRightBar = document.createElement('ul');
         newRightBar.className = 'right-bar';
 
-        this.generateLI('ptLabel', `x = ${this.x}`, newRightBar, (event)=> {
-            statusBar.innerText = "You clicked me!";
-        });
+        this.generateLIandEventHandler('ptLabel',
+         `x = ${this.x}`, newRightBar);
 
-        this.generateLI('lhLimit', 'Left-hand Limit', newRightBar, (event)=> {
-            const a = new Ashley(0, 0, this.chart);
-            a.animatelhL(this).then((res) => {
-                a.destroy();
-                this.chart.update();
-            })
-            statusBar.innerText = `At x = ${this.x}, the left-handed limit is ${this.lhL}`;
-        });
+        this.generateLIandEventHandler('lhLimit',
+         'Left-hand Limit', newRightBar,
+          () => `At x = ${this.x}, the left-handed limit is ${this.lhL}`,
+           'animatelhL');
 
-        this.generateLI('rhLimit', 'Right-hand Limit', newRightBar, (event)=> {
-            const a = new Ashley(0, 0, this.chart);
-            a.animaterhL(this).then((res) => {
-                a.destroy();
-                this.chart.update();
-            });
-            statusBar.innerText = `At x = ${this.x}, the right-handed limit is ${this.rhL}`;
-        });
+        this.generateLIandEventHandler('rhLimit',
+         'Right-hand Limit', newRightBar,
+          () => `At x = ${this.x}, the right-handed limit is ${this.rhL}`,
+           'animaterhL');
 
-        this.generateLI('fullLimit', 'Full Limit', newRightBar, (event)=> {
-            const a = new Ashley(0, 0, this.chart);
-            a.animatefullL(this).then((res)=> {
-                a.destroy();
-                this.chart.update();
-            });
-            statusBar.innerText = `At x = ${this.x}, the full limit is ${this.fullL}`;
-        });
+        this.generateLIandEventHandler('fullLimit',
+        'Full Limit', newRightBar,
+        () => `At x = ${this.x}, the full limit is ${this.fullL}`,
+        'animatefullL');
+    
 
-        this.generateLI('funcValue', 'Function Value', newRightBar, (event)=> {
-            const a = new Ashley(0, 0, this.chart);
-            a.animateFuncValue(this).then((res) => {
-                a.destroy();
-                this.chart.update();
-            });
-            statusBar.innerText = `At x = ${this.x}, the function value is ${this.fValue}`;
-        });
+        this.generateLIandEventHandler('funcValue',
+        'Function Value', newRightBar,
+         () => `At x = ${this.x}, the function value is ${this.fValue}`,
+         'animateFuncValue');
 
-        this.generateLI('continuity', 'Continuity', newRightBar, (event)=> {
-            const a = new Ashley(0, 0, this.chart);
-            a.animateContinuity(this).then((res) => {
-                a.destroy();
-            });
-            statusBar.innerText = `At x = ${this.x}, the function is ${this.continuity}`;
-        });
+        this.generateLIandEventHandler('continuity',
+        'Continuity', newRightBar,
+         () => `At x = ${this.x}, the function is ${this.continuity}`,
+         'animateContinuity');
 
         const parentDiv = document.getElementsByClassName("full-size")[0];
 
