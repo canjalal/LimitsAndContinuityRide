@@ -45,6 +45,7 @@
   top: calc(50% - var(--height) / 2);
   left: calc(50% - var(--width) / 2);
   text-align: center;
+  border-radius: 10%;
 }
 
 .preview-right {
@@ -121,15 +122,6 @@
   color: red;
   font-size: 36pt;
   font-weight: bold;
-}
-
-#imageL {
-  border: 1px solid black;
-  height: 24px;
-  width: 16px;
-  background: url("../src/WalkingGirl2.png");
-  background-size: 84px;
-  background-position: bottom 54px right -2px;
 }
 
 #status-bar {

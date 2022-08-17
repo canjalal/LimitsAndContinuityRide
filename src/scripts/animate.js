@@ -1,42 +1,5 @@
 import { FINE_GRAIN } from './mathfunction';
 import { drawHorizLine, drawVertLine } from './clickpoints'
-/*
-
-Information require to animate leftHandLimit:
-- Actual limit as a dashed line at x and y
-- left data
-- Animation happens following an arctan curve as a function of time
-- Pulse limit point
-- Destroy animation
-
-Information required to animate rightHandLimit:
-- Actual limit as a dashed line at x and y
-- right data
-- Animation happens following a negative arctan curve as a function of time
-- Pulse limit point
-- Destroy animation
-
-Information required to animate fullLimit:
-Run leftHandLimit, run rightHandLimit, after animation, pulse both points. If they're not equal, they should be red, if equal, they should be green
-- Destroy animation
-
-Information requireqd to animate funcValue
-- yFilled
-- Animate happens following a parabolic curve as a function of time (assume character is fine landing on her feet), using WalkingGirlForward
-- PUlse function point if it exists. If it doesn't exist, character falls to bottom of graph. Initial velocity zero, initial position at top of graph
-
-Information required to animate Continuity
-- left data
-- right data
- - yFilled
-
- If continuous, animation will proceed along x linearly forward.
- If not continuous, animation will proceed along x linearly forward up to the end of leftData
- (later on, when blanks are allowed, if not defined on the left, character will fall straight down in middle of leftData)
- After it hits end of left data, character will follow parabolic curve, with initial velocity proportional to slope between last leftDAta points,
- but x value will continue to increment at constant speed
-
-*/
 
 export const animateRight = animates('startR');
 

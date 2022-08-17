@@ -50,16 +50,11 @@ import {
     SubTitle
   );
 
-//   export const imageL = document.getElementById("imageL");
   export const previewRight = document.getElementsByClassName('preview-right')[0];
   export const ptLabel = document.getElementById("ptLabel");
 
   export const rightBar = document.getElementsByClassName("right-bar")[0];
 
-
-//   imageL.addEventListener('mouseover', animateLeft.bind(imageL));
-//   imageL.addEventListener('mouseout', animateLeft.bind(imageL));
-//   imageR.addEventListener('click', animateLeft.bind(imageR));
 
 function clickHandler(click, mathF) {
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
@@ -209,7 +204,10 @@ function loadgraph() {
         ]
         },
         options: {
-            plugins: { tooltip: { enabled: false } },
+            plugins: {
+                tooltip: { enabled: false },
+                legend: { display: false }
+            },
 
             responsive: false,
             scales: {

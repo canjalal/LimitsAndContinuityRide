@@ -42,6 +42,7 @@
     top: calc(50% - var(--height) / 2);
     left: calc(50% - var(--width) / 2);
     text-align: center;
+    border-radius: 10%;
 }
 
 .preview-right {
@@ -127,23 +128,6 @@
     font-size: 36pt;
     font-weight: bold;
 }
-
-#imageL {
-    border: 1px solid black;
-    height: 24px;
-    width: 16px;
-    background: url("../src/WalkingGirl2.png");
-    background-size: 84px;
-    background-position : bottom 54px right -2px;
-    // transition-property: background-position;
-    // transition-duration: 4s;
-    // transform: scaleX(-1);
-    // box-sizing: border-box;
-}
-
-// #image:hover {
-//     background-position : bottom 52px right 60px;
-// }
 
 #status-bar {
     text-align: center;
