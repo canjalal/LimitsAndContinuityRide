@@ -237,6 +237,7 @@ table {
 #status-bar {
   text-align: center;
   border: 3px dotted gray;
+  display: none;
 }
 
 #ashley {

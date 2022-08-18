@@ -138,7 +138,7 @@ export class ClickPoint {
             newLI.addEventListener('click', (event) => {
                 // console.log(this.lhL);
                 parent.style.display = 'none';
-                statusBar.innerText = msgcallback();
+                statusBar.innerText = msgcallback(); // future LaTeX equation display
                 const a = new Ashley(this.node.x, this.node.y, this.chart);
                 a[methodName](this).then((res) => {
                     a.destroy();
