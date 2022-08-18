@@ -375,7 +375,6 @@ export class Ashley {
             while(currpos[0] < clickPt.x) {
 
                 currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10);
-                this.chart.update();
                 i += 1;
             }
             // console.log(this.chart);
@@ -402,7 +401,6 @@ export class Ashley {
                 while(currpos[1] > yf) {
 
                     currpos = await this.movewithDelay(xi, yi, 10);
-                    this.chart.update();
                     m -= 0.001;
                     xi += FINE_GRAIN;
         
