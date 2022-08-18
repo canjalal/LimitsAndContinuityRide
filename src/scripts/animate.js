@@ -140,10 +140,11 @@ export class Ashley {
 
     async animatelhL(clickPt) {
 
-        this.caption.innerHTML = `[${this.caption.style.left}, ${this.caption.style.top}]`;
-
         // console.log([clickPt.x, clickPt.y]);
         if(clickPt.findLHL()) {
+
+            this.caption.innerHTML = `As I walk on the function to the right towards x = ${clickPt.x}, I go ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'}
+            the hill, towards a height of ${clickPt.lhL}. That's the left-handed limit.`;
             let xcoords = [];
 
             for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
@@ -165,6 +166,9 @@ export class Ashley {
                 i += 1;
             }
         } else {
+
+            this.caption.innerHTML = `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
+            Hence the left-handed limit is undefined.`;
 
             this.p.style.background = 'url("./src/WalkingGirlForward.png")';
             this.p.style.backgroundSize = '72px';
@@ -206,6 +210,7 @@ export class Ashley {
     async animaterhL(clickPt) {
 
         if(clickPt.findRHL()) {
+
             this.p.style.transform = 'scaleX(-1)';
 
             let xcoords = [];
@@ -216,6 +221,9 @@ export class Ashley {
             let ycoords = clickPt.rightData.slice();
     
             ycoords.reverse();
+
+            this.caption.innerHTML = `As I walk on the function to the left towards x = ${clickPt.x}, I go ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'}
+            the hill, towards a height of ${clickPt.rhL}. That's the right-handed limit.`;
     
             drawHorizLine.call(this.chart, clickPt.findRHL());
     
@@ -241,6 +249,9 @@ export class Ashley {
             return true;
 
         } else {
+
+            this.caption.innerHTML = `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
+            Hence the right-handed limit is undefined.`;
 
             this.p.style.background = 'url("./src/WalkingGirlForward.png")';
             this.p.style.backgroundSize = '72px';
@@ -272,10 +283,25 @@ export class Ashley {
     }
 
     async animatefullL(clickPt) {
+        let fullL = clickPt.fullL;
+        let fullLimitCaption = () => {
+            return new Promise(resolve => {
+                if(fullL === "undefined") {
+                    this.caption.innerHTML = `Since the height I think I'm going to from the left is different from the one I'm approaching
+                    from the right, the two-sided full limit is undefined.`;
+                } else {
+                    this.caption.innerHTML = `Since the height I think I'm going to from the left is the same as the one I'm approaching
+                    from the right, the two-sided full limit is ${fullL}`;
+                }
+                setTimeout(() => {
+                    resolve(true);
+                }, 2000);
+            })
+        }
         await this.animatelhL(clickPt);
         await this.animaterhL(clickPt);
         // console.log(this.chart.scales.y.max);
-
+        await fullLimitCaption();
     }
 
     async animateFuncValue(clickPt) {
