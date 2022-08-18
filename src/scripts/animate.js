@@ -157,10 +157,9 @@ export class Ashley {
             drawHorizLine.call(this.chart, clickPt.findLHL());
             drawVertLine.call(this.chart, clickPt.x);
 
-            await this.displayCaptionPromise(() => `Walking from left to right towards x = ${clickPt.x}, I go ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'}
-            the hill, getting closer and closer to a height of ${clickPt.lhL}. That's the left-handed limit.`, 4000);
-    
-            // console.log(currx);
+            await this.displayCaptionPromise(() => `I'm going to start my walk
+             ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
+             the next dot, can you see how ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'high' : 'low'} it is?`, 4000);
     
             let i = 1;
             while(currpos[0] < clickPt.x) {
@@ -169,6 +168,10 @@ export class Ashley {
                 // this.chart.update();
                 i += 1;
             }
+
+            await this.displayCaptionPromise(() => `Walking from left to right towards x = ${clickPt.x}, I go ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'}
+            the hill, getting closer and closer to a height of ${clickPt.lhL}. That's the left-handed limit.`, 4000);
+
         } else {
 
             this.p.style.background = 'url("./src/WalkingGirlForward.png")';
@@ -181,21 +184,24 @@ export class Ashley {
             let xi = clickPt.x - 0.5;
             let currpos = this.setLocation(xi, yi);
 
-            await this.displayCaptionPromise(() => `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
-            Hence the left-handed limit is undefined.`, 4000);
+           await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
+             ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
+             the next dot to the right, do you see a problem with me getting there?`, 4000);
     
             let v = -0.03;
     
             while(currpos[1] > yf) {
     
                 currpos = await this.movewithDelay(xi, yi, 10);
-                this.chart.update();
                 v -= 0.001;
     
                 yi += v;
             }
     
             currpos = await this.movewithDelay(xi, yf, 1000);
+
+            await this.displayCaptionPromise(() => `I tried to walk on the function towards x = ${clickPt.x} but there's a gap so I fell down.
+            This means the left-handed limit is undefined.`, 4000);
 
             this.p.style.background = 'url("./src/WalkingGirl2.png")';
             this.p.style.backgroundSize = '84px';
@@ -231,8 +237,9 @@ export class Ashley {
     
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
-            await this.displayCaptionPromise(() => `Walking from right to left towards x = ${clickPt.x}, I go ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'}
-            the hill, getting closer and closer to a height of ${clickPt.rhL}. That's the right-handed limit.`, 4000);
+            await this.displayCaptionPromise(() => `I'm going to start my walk
+             ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'} toward 
+             the next dot, can you see how ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'high' : 'low'} it is?`, 4000);
 
     
             // console.log(currx);
@@ -244,14 +251,11 @@ export class Ashley {
                 // this.chart.update();
                 i += 1;
             }
-            // console.log(this.chart);
     
-            // drawVertLine.call(this.chart, currx);
-    
-    
+            await this.displayCaptionPromise(() => `Walking from right to left towards x = ${clickPt.x}, I go ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'}
+            the hill, getting closer and closer to a height of ${clickPt.rhL}. That's the right-handed limit.`, 4000);
+
             this.p.style.transform = 'scaleX(1)'; // don't forget to reverse this
-    
-            return true;
 
         } else {
 
@@ -266,8 +270,9 @@ export class Ashley {
             let xi = clickPt.x + 0.5;
             let currpos = this.setLocation(xi, yi);
 
-            await this.displayCaptionPromise(() => `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
-            Hence the right-handed limit is undefined.`, 4000);
+            await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
+             ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'} toward 
+             the next dot to the left, do you see a problem with me getting there?`, 4000);
     
             let v = -0.03;
     
@@ -279,8 +284,13 @@ export class Ashley {
     
                 yi += v;
             }
+
     
             currpos = await this.movewithDelay(xi, yf, 1000);
+
+
+            await this.displayCaptionPromise(() => `I tried to walk on the function towards x = ${clickPt.x} but there's a gap so I fell down.
+            This means the right-handed limit is undefined.`, 4000);
 
         }
 
