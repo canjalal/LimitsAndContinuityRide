@@ -111,7 +111,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    border: 2px solid pink;
+    border: 4px solid pink;
     width: 10vw;
     justify-content: center;
 }
@@ -201,6 +201,8 @@
     font-size: 3.6vw; // can't use responsive font-size here, it will break the animation
     font-weight: bold;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    justify-content: space-between;
 }
 
 #status-bar {
@@ -250,3 +252,7 @@
       filter: none;
     }
   }
+
+.logos {
+    height: 52pt;
+}
