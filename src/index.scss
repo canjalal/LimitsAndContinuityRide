@@ -26,16 +26,20 @@
     padding: 10px;
     text-align: center;
     cursor: pointer;
+    border-radius: 10%;
+    box-shadow: 10px 10px gray;
+    position: relative;
 }
 
+
 .splash-screen {
-    --width: 800px;
+    --width: 80vw;
     width: var(--width);
-    --height: 600px;
+    --height: 60vw;
     height: var(--height);
     background-color: lightcyan;
-    font-size: 36pt;
-    color: violet;
+    // font-size: 36pt;
+    // color: violet;
     display: flex;
     flex-direction: column;
     justify-content:space-evenly;
@@ -45,6 +49,42 @@
     left: calc(50% - var(--width) / 2);
     text-align: center;
     border-radius: 10%;
+    border: 3px solid darkgreen;
+}
+
+.mini-splash {
+
+    background-color: lightcyan;
+    // font-size: 36pt;
+    // color: violet;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+    align-content: space-between;
+    position: absolute;
+    // top: calc(50% - var(--height) / 2);
+    // left: calc(50% - var(--width) / 2);
+    text-align: center;
+    border-radius: 10%;
+    border: 3px solid darkgreen;
+}
+.splash-screen > em {
+    font-size: 1.8vw;
+    color: darkgreen;
+}
+
+.splash-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.splash-description p {
+    font-size: 2.4vw;
+    text-align: left;
+    width: 40vw;
+    padding-left: 8vw;
+    color:rgb(104, 1, 104);
 }
 
 .preview-right {
@@ -105,13 +145,23 @@
 
 }
 
+@keyframes loadNewPt {
+    from {background-color: rgb(104, 1, 104); font-size: 18pt;}
+    to {background-color: white; font-size: 14pt;}
+}
+
 #ptLabel {
     margin-top: 0px;
-    // padding-top: 50px;
+    padding-top: 4px;
     border: none;
     font-size: 14pt;
     cursor: auto;
-    height: 30px;   
+    height: 30px;
+    background-color: white;
+    animation-name: loadNewPt;
+    animation-duration: 3s;
+
+    border:2px solid rgb(104, 1, 104);
 
 }
 
@@ -125,10 +175,11 @@
     opacity: 0.4;
 }
 
-#heading-main {
-    color: red;
-    font-size: 36pt;
+.heading-main {
+    color: rgb(104, 1, 104);
+    font-size: 4.8vw;
     font-weight: bold;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 #status-bar {
@@ -154,12 +205,12 @@
 }
 
 #ashleyface {
-    border: 1px solid black;
-    height: 24px;
-    width: 16px;
+    // border: 1px solid black;
+    height: 24vw;
+    width: 16vw;
     background: url("../src/WalkingGirlForward.png");
-    background-size: 72px;
-    background-position : bottom 47px right -1px;
+    background-size: 72vw;
+    background-position : bottom 47vw right -1vw; // bottom is 47/24 of height, right is -1/16 of width
     // transition-property: background-position;
     // transition-duration: 4s;
     // transform: scaleX(-1);

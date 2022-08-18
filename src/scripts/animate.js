@@ -94,6 +94,37 @@ export class Ashley {
         this.setLocation(xi, yi);
         document.body.appendChild(this.p);
 
+        this.caption = document.createElement('div');
+        this.caption.className = 'mini-splash';
+        this.caption.style.width = '400px';
+        this.caption.style.height = '200px';
+
+        this.placeCaption(xi, yi);
+    }
+
+    placeCaption(xi, yi) { // place in corner farthest away from point
+        let ymin = this.chart.scales.y.min;
+        let ymax = this.chart.scales.y.max;
+
+        let xmin = this.chart.scales.x.min;
+        let xmax = this.chart.scales.x.max;
+
+        let x, y;
+
+        if (xmax - xi > xi - xmin) { // if it's farther from right side than left side, put caption on right side
+            x = `${this.xAxis.getPixelForValue(xmax) - parseFloat(this.caption.style.width)}px`;
+        } else {
+            x = `${this.xAxis.getPixelForValue(xmin)}px`;
+        }
+
+        if (ymax - yi > yi - ymin) { // if it's farther from the top than the bottom, put caption on top
+            y = `${this.yAxis.getPixelForValue(ymax) + parseFloat(this.caption.style.height)}px`;
+        } else {
+            y = `${this.yAxis.getPixelForValue(ymin) - parseFloat(this.caption.style.height)}px`;
+        }
+        this.caption.style.left = x;
+        this.caption.style.top = y;
+        document.body.appendChild(this.caption);
     }
 
     setLocation(x, y) {
@@ -108,6 +139,9 @@ export class Ashley {
     }
 
     async animatelhL(clickPt) {
+
+        this.caption.innerHTML = `[${this.caption.style.left}, ${this.caption.style.top}]`;
+
         // console.log([clickPt.x, clickPt.y]);
         if(clickPt.findLHL()) {
             let xcoords = [];
@@ -153,7 +187,7 @@ export class Ashley {
                 yi += v;
             }
     
-            currpos = await this.movewithDelay(xi, yi - v, 1000);
+            currpos = await this.movewithDelay(xi, yf, 1000);
 
             this.p.style.background = 'url("./src/WalkingGirl2.png")';
             this.p.style.backgroundSize = '84px';
@@ -229,7 +263,7 @@ export class Ashley {
                 yi += v;
             }
     
-            currpos = await this.movewithDelay(xi, yi - v, 1000);
+            currpos = await this.movewithDelay(xi, yf, 1000);
 
         }
 
@@ -273,7 +307,7 @@ export class Ashley {
             yi += v;
         }
 
-        currpos = await this.movewithDelay(xi, yi - v, 1000);
+        currpos = await this.movewithDelay(xi, yf, 1000);
 
     }
 
@@ -373,5 +407,6 @@ export class Ashley {
 
     destroy() {
         this.p.parentNode.removeChild(this.p);
+        this.caption.parentNode.removeChild(this.caption);
     }
 }

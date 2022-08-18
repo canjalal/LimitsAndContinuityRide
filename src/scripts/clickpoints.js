@@ -54,7 +54,7 @@ export class ClickPoint {
         // this.leftData = null;
 
         this.chart = chart;
-        this.x = x;
+        this.x = x; // x and y are stored in this.node
         this.mathF = mathF;
         let currnode = mathF.pNode;
         while(currnode.x !== x) {
@@ -137,11 +137,13 @@ export class ClickPoint {
         if(methodName) {
             newLI.addEventListener('click', (event) => {
                 // console.log(this.lhL);
+                parent.style.display = 'none';
                 statusBar.innerText = msgcallback();
-                const a = new Ashley(0, 0, this.chart);
+                const a = new Ashley(this.node.x, this.node.y, this.chart);
                 a[methodName](this).then((res) => {
                     a.destroy();
                     this.chart.update();
+                    parent.style.display = 'flex';
                 })
             });
         }
@@ -154,6 +156,23 @@ export class ClickPoint {
         const statusBar = document.getElementById('status-bar');
         const newRightBar = document.createElement('ul');
         newRightBar.className = 'right-bar';
+
+        newRightBar.addEventListener('mousedown', (event) => {
+      
+          let item = event.target;
+          item.style.left  = `10px`;
+          item.style.top = `10px`;
+        // item.style.backgroundColor = 'green';
+          item.style.boxShadow = "none";
+        });
+      
+        newRightBar.addEventListener('mouseup', (event) => {
+      
+          let item = event.target;
+          item.style.left = `0px`;
+          item.style.top = `0px`;
+          item.style.boxShadow = "10px 10px gray";
+        });
 
         this.generateLIandEventHandler('ptLabel',
          `x = ${this.x}`, newRightBar);

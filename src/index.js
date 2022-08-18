@@ -53,8 +53,6 @@ import {
   export const previewRight = document.getElementsByClassName('preview-right')[0];
   export const ptLabel = document.getElementById("ptLabel");
 
-  export const rightBar = document.getElementsByClassName("right-bar")[0];
-
 
 function clickHandler(click, mathF) {
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
@@ -106,9 +104,15 @@ function loadgraph() {
 
     const testf = new MathFunction();
     // console.log(testf.generatefineData().length);
-    setTimeout(() => {
-        splashscreen.style.display = 'none';
-    }, 1000);
+    // setTimeout(() => {
+    //     splashscreen.style.display = 'none';
+    // }, 1000);
+
+    splashscreen.addEventListener('click', (event) => {
+        event.currentTarget.style.display = 'none';
+    })
+
+
     const myChart = new Chart(ctx, {
         type: 'scatter',
         plugins: [{
@@ -183,7 +187,9 @@ function loadgraph() {
             pointStyle: 'circle',
             radius: 4,
             borderWidth: 3,
-            hitRadius: 2,
+            pointHitRadius: 10,
+            pointHoverRadius: 8,
+            pointHoverBorderColor: 'rgb(104, 1, 104)',
             borderColor: "rgba(0, 0, 0, 1)",
             backgroundColor: "rgba(0, 0, 1)",
             pointHitRadius: 10 // how close you have to click/tap to register as a click
@@ -196,6 +202,8 @@ function loadgraph() {
 
             pointStyle: 'circle',
             radius: 4,
+            pointHoverRadius: 8,
+            pointHoverBorderColor: 'rgb(104, 1, 104)',
             borderWidth: 3,
             borderColor: "rgba(0, 0, 0, 1)",
             pointHitRadius: 10
