@@ -35,7 +35,7 @@
 .splash-screen {
     --width: 80vw;
     width: var(--width);
-    --height: 60vw;
+    --height: min(80vw, 80vh);
     height: var(--height);
     background-color: lightcyan;
     // font-size: 36pt;
@@ -67,9 +67,11 @@
     text-align: center;
     border-radius: 10%;
     border: 3px solid darkgreen;
+    font-size: 18px;
+    padding: 10px;
 }
 .splash-screen > em {
-    font-size: 1.8vw;
+    font-size: min(1.8vw, 1.8vh);
     color: darkgreen;
 }
 

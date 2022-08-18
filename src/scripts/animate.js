@@ -91,13 +91,13 @@ export class Ashley {
         // this.p.style.left = `${this._xpos - A_WIDTH / 2}px`;
         // this.p.style.top = `${this._ypos + A_HEIGHT }px`;
 
-        this.setLocation(xi, yi);
+        // this.setLocation(xi, yi);
         document.body.appendChild(this.p);
 
         this.caption = document.createElement('div');
         this.caption.className = 'mini-splash';
-        this.caption.style.width = '400px';
-        this.caption.style.height = '200px';
+        this.caption.style.width = '300px';
+        this.caption.style.height = '150px';
 
         this.placeCaption(xi, yi);
     }
@@ -143,8 +143,6 @@ export class Ashley {
         // console.log([clickPt.x, clickPt.y]);
         if(clickPt.findLHL()) {
 
-            this.caption.innerHTML = `As I walk on the function to the right towards x = ${clickPt.x}, I go ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'}
-            the hill, towards a height of ${clickPt.lhL}. That's the left-handed limit.`;
             let xcoords = [];
 
             for(let i = clickPt.x - 1; i < clickPt.x; i += FINE_GRAIN) {
@@ -152,9 +150,15 @@ export class Ashley {
             }
             let ycoords = clickPt.leftData;
     
-            drawHorizLine.call(this.chart, clickPt.findLHL());
+
     
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
+
+            drawHorizLine.call(this.chart, clickPt.findLHL());
+            drawVertLine.call(this.chart, clickPt.x);
+
+            await this.displayCaptionPromise(() => `Walking from left to right towards x = ${clickPt.x}, I go ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'}
+            the hill, getting closer and closer to a height of ${clickPt.lhL}. That's the left-handed limit.`, 4000);
     
             // console.log(currx);
     
@@ -167,9 +171,6 @@ export class Ashley {
             }
         } else {
 
-            this.caption.innerHTML = `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
-            Hence the left-handed limit is undefined.`;
-
             this.p.style.background = 'url("./src/WalkingGirlForward.png")';
             this.p.style.backgroundSize = '72px';
             this.p.style.backgroundPosition = 'bottom 47px right -1px';
@@ -179,6 +180,9 @@ export class Ashley {
             let yi = clickPt.node.y;
             let xi = clickPt.x - 0.5;
             let currpos = this.setLocation(xi, yi);
+
+            await this.displayCaptionPromise(() => `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
+            Hence the left-handed limit is undefined.`, 4000);
     
             let v = -0.03;
     
@@ -211,6 +215,9 @@ export class Ashley {
 
         if(clickPt.findRHL()) {
 
+            drawHorizLine.call(this.chart, clickPt.findRHL());
+            drawVertLine.call(this.chart, clickPt.x);
+
             this.p.style.transform = 'scaleX(-1)';
 
             let xcoords = [];
@@ -221,14 +228,12 @@ export class Ashley {
             let ycoords = clickPt.rightData.slice();
     
             ycoords.reverse();
-
-            this.caption.innerHTML = `As I walk on the function to the left towards x = ${clickPt.x}, I go ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'}
-            the hill, towards a height of ${clickPt.rhL}. That's the right-handed limit.`;
-    
-            drawHorizLine.call(this.chart, clickPt.findRHL());
-    
     
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
+
+            await this.displayCaptionPromise(() => `Walking from right to left towards x = ${clickPt.x}, I go ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'}
+            the hill, getting closer and closer to a height of ${clickPt.rhL}. That's the right-handed limit.`, 4000);
+
     
             // console.log(currx);
     
@@ -250,8 +255,6 @@ export class Ashley {
 
         } else {
 
-            this.caption.innerHTML = `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
-            Hence the right-handed limit is undefined.`;
 
             this.p.style.background = 'url("./src/WalkingGirlForward.png")';
             this.p.style.backgroundSize = '72px';
@@ -262,6 +265,9 @@ export class Ashley {
             let yi = clickPt.node.y;
             let xi = clickPt.x + 0.5;
             let currpos = this.setLocation(xi, yi);
+
+            await this.displayCaptionPromise(() => `I'm trying to walk on the function towards x = ${clickPt.x} but there's a gap so I fall down.
+            Hence the right-handed limit is undefined.`, 4000);
     
             let v = -0.03;
     
@@ -282,46 +288,53 @@ export class Ashley {
         
     }
 
+    async displayCaptionPromise(textcallback, delay = 3000) {
+        return new Promise(resolve => {
+            this.caption.innerHTML = textcallback();
+            setTimeout(() => {
+                resolve(true);
+            }, delay);
+        });
+    }
+
     async animatefullL(clickPt) {
         let fullL = clickPt.fullL;
-        let fullLimitCaption = () => {
-            return new Promise(resolve => {
-                if(fullL === "undefined") {
-                    this.caption.innerHTML = `Since the height I think I'm going to from the left is different from the one I'm approaching
-                    from the right, the two-sided full limit is undefined.`;
-                } else {
-                    this.caption.innerHTML = `Since the height I think I'm going to from the left is the same as the one I'm approaching
-                    from the right, the two-sided full limit is ${fullL}`;
-                }
-                setTimeout(() => {
-                    resolve(true);
-                }, 2000);
-            })
+        let textcallback;
+        if(fullL === "undefined") {
+            textcallback = () => `Since the height I think I'm going to from the left is different from the one I'm going
+            from the right, the two-sided full limit is undefined.`;
+        } else {
+            textcallback = () => `Since the height I think I'm going to from the left is the same as the one I'm approaching
+            from the right, the two-sided full limit is ${fullL}`;
         }
+
         await this.animatelhL(clickPt);
         await this.animaterhL(clickPt);
         // console.log(this.chart.scales.y.max);
-        await fullLimitCaption();
+        drawVertLine.call(this.chart, clickPt.x);
+        await this.displayCaptionPromise(textcallback, 3000);
     }
 
     async animateFuncValue(clickPt) {
         this.p.style.background = 'url("./src/WalkingGirlForward.png")';
         this.p.style.backgroundSize = '72px';
         this.p.style.backgroundPosition = 'bottom 47px right -1px';
-
+        let fVal = clickPt.fValue;
         let yf = this.chart.scales.y.min;
-
-        if(clickPt.node.yFilled === 0) {
-            yf = 0;
-        } else if(clickPt.node.yFilled) {
-            yf = clickPt.node.yFilled;
-            drawHorizLine.call(this.chart, yf);
-
-        }
 
         let yi = this.chart.scales.y.max;
         let xi = clickPt.x;
         let currpos = this.setLocation(xi, yi);
+
+        drawVertLine.call(this.chart, clickPt.x);
+        if(fVal === "undefined") {
+            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, there's some sort of gap that I fall through, so the function value f(${clickPt.x}) is undefined.`, 3000);
+        } else {
+            yf = clickPt.node.yFilled;
+            // this.caption.innerHTML = `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`;
+            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`, 3000);
+            drawHorizLine.call(this.chart, yf);
+        }
 
         let v = -0.03;
 
@@ -346,7 +359,15 @@ export class Ashley {
             }
             let ycoords = clickPt.leftData;
 
+            drawVertLine.call(this.chart, clickPt.x);
+
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
+
+            if (clickPt.isContinuous()) {
+                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's no jump or gap for me to fall through, so the function is continuous there`, 3000);
+            } else {
+                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's a jump or gap that I fall through, so the function isn't continuous there`, 3000);
+            }
 
             // console.log(currx);
 
