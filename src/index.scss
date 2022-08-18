@@ -184,7 +184,8 @@
 
 .heading-main {
     color: rgb(104, 1, 104);
-    font-size: 32pt; // can't use responsive font-size here, it will break the animation
+    height: 52pt; // set this for correct y position of Ashley 
+    font-size: 3.6vw; // can't use responsive font-size here, it will break the animation
     font-weight: bold;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }

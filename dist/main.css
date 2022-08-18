@@ -226,7 +226,8 @@ table {
 
 .heading-main {
   color: rgb(104, 1, 104);
-  font-size: 32pt;
+  height: 52pt;
+  font-size: 3.6vw;
   font-weight: bold;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }

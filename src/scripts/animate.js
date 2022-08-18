@@ -133,7 +133,7 @@ export class Ashley {
         this._ypos = this.yAxis.getPixelForValue(y);
 
         this.p.style.left = `${this._xpos - A_WIDTH / 2}px`;
-        this.p.style.top = `${this._ypos + A_HEIGHT }px`;
+        this.p.style.top = `${this._ypos + 2 * A_HEIGHT }px`;
 
         return [x, y];
     }
