@@ -1,7 +1,7 @@
 import { FINE_GRAIN } from './mathfunction';
 import { drawHorizLine, drawVertLine } from './clickpoints'
 
-export const animateRight = animates('startR');
+export const animateAshley = animates('startR');
 
 export const animateLeft = animates('startL');
 
@@ -11,7 +11,6 @@ function animates(action) {
 
     const interval = 100;
     let startpos = -2;
-
     let timer = null;
 
     let isRunning = false;
@@ -22,9 +21,7 @@ function animates(action) {
 
     switch (action) {
         case 'startL':
-            return function() {
-                console.log("Again");
-                // isRunning = true;
+            return async function() {
                 this.style.transform = 'scaleX(1)';
                 let i = 0;
                 if(isRunning) {
@@ -40,12 +37,14 @@ function animates(action) {
             }
             break;
         case 'startR':
-            return function() {
-                this.style.transform = 'scaleX(-1)';
+            return async function() {
                 let i = 0;
                 if(isRunning) {
-                    clearInterval(timer);
+                    return new Promise(resolve => {
+                        clearInterval(timer);
                     isRunning = false;
+                    resolve(true);
+                    });
                 } else {
                     timer = setInterval(() => {
                         this.style.backgroundPosition = `bottom 54px right ${spritePos(i)}px`;
@@ -161,6 +160,8 @@ export class Ashley {
              the next dot, can you see how ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'high' : 'low'} it is?`, 4000);
     
              drawHorizLine.call(this.chart, clickPt.findLHL());
+             
+            await animateAshley.call(this.p);
 
             let i = 1;
             while(currpos[0] < clickPt.x) {
@@ -169,6 +170,8 @@ export class Ashley {
                 // this.chart.update();
                 i += 1;
             }
+
+            await animateAshley.call(this.p);
 
             await this.displayCaptionPromise(() => `Walking from left to right towards x = ${clickPt.x}, I go ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'}
             the hill, getting closer and closer to a height of ${clickPt.lhL}. That's the left-handed limit.`, 4000);
@@ -189,8 +192,6 @@ export class Ashley {
             // console.log(prevnode);
 
             let prevSlope = prevnode.m;
-
-
     
             let yi = clickPt.node.y - 0.5 * prevSlope;
             let xi = clickPt.x - 0.5;
@@ -251,7 +252,7 @@ export class Ashley {
 
              drawHorizLine.call(this.chart, clickPt.findRHL());
 
-            // console.log(currx);
+            await animateAshley.call(this.p);
     
             let i = 1;
             while(currpos[0] > clickPt.x + FINE_GRAIN) {
@@ -260,6 +261,8 @@ export class Ashley {
                 // this.chart.update();
                 i += 1;
             }
+
+            await animateAshley.call(this.p);
     
             await this.displayCaptionPromise(() => `Walking from right to left towards x = ${clickPt.x}, I go ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'}
             the hill, getting closer and closer to a height of ${clickPt.rhL}. That's the right-handed limit.`, 4000);
@@ -397,7 +400,7 @@ export class Ashley {
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
             await this.displayCaptionPromise(() => `I'm about to run on the graph past the dashed line, can you see whether it'll be fine or will I fall off?`, 3000);
-
+            animateAshley.call(this.p);
             let i = 1;
             while(currpos[0] < clickPt.x) {
 
@@ -428,6 +431,8 @@ export class Ashley {
                     yi += m;
                 }
 
+                await animateAshley.call(this.p);
+
                 await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's a jump or gap that I fall through, so the function isn't continuous there`, 3000);
 
                 
@@ -446,9 +451,10 @@ export class Ashley {
                 while(currpos[0] < clickPt.x + 0.5) {
         
                     currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2* i);
-                    this.chart.update();
                     i += 1;
                 }
+
+                await animateAshley.call(this.p);
 
                 await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's no jump or gap for me to fall through, so the function is continuous there`, 3000);
 

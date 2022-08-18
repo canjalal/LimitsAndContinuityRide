@@ -4,6 +4,7 @@ const { MathFunction, coarseLabels, fineLabels, MIN_X } = require("./scripts/mat
 const { regNode, vertAsympNode, removDisNode, justDisNode } = require("./scripts/pointnode");
 const { ClickPoint, drawVertLine } = require("./scripts/clickpoints");
 const { animateLeft, animateRight, stopAnimation, Ashley } = require("./scripts/animate.js");
+
 window.MathFunction = MathFunction;
 window.TestData = TestData;
 // window.myChart = myChart;
