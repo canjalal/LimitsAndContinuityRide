@@ -161,25 +161,21 @@ export class ClickPoint {
         newRightBar.className = 'right-bar';
 
         newRightBar.addEventListener('mousedown', (event) => {
-            let item = event.target;
-            if(item.tagName === "LI") {
-
+            // console.log(event.target.parent);
+            let item = event.target.tagName === "LI" ? event.target : event.target.parentElement;
                 item.style.left  = `1vw`;
                 item.style.top = `1vw`;
               // item.style.backgroundColor = 'green';
                 item.style.boxShadow = "none";
-            }
 
         });
       
         newRightBar.addEventListener('mouseup', (event) => {
       
-          let item = event.target;
-          if(item.tagName === "LI") {
+          let item = event.target.tagName === "LI" ? event.target : event.target.parentElement;
             item.style.left = `0vw`;
             item.style.top = `0vw`;
-            item.style.boxShadow = "1vw 1vw gray";
-          }
+            if(item.tagName === "LI") item.style.boxShadow = "1vw 1vw gray";
 
         });
 
