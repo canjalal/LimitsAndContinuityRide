@@ -132,7 +132,10 @@ export class ClickPoint {
         const statusBar = document.getElementById('status-bar');
 
         newLI.id = id;
-        newLI.innerText = innerText;
+        newLI.innerHTML = `<span>${innerText}</span>`;
+        // if(window.innerWidth < 900) {
+        //     newLI.style.backgroundImage = 'none';
+        // }
 
         if(methodName) {
             newLI.addEventListener('click', (event) => {
@@ -158,20 +161,26 @@ export class ClickPoint {
         newRightBar.className = 'right-bar';
 
         newRightBar.addEventListener('mousedown', (event) => {
-      
-          let item = event.target;
-          item.style.left  = `10px`;
-          item.style.top = `10px`;
-        // item.style.backgroundColor = 'green';
-          item.style.boxShadow = "none";
+            let item = event.target;
+            if(item.tagName === "LI") {
+
+                item.style.left  = `1vw`;
+                item.style.top = `1vw`;
+              // item.style.backgroundColor = 'green';
+                item.style.boxShadow = "none";
+            }
+
         });
       
         newRightBar.addEventListener('mouseup', (event) => {
       
           let item = event.target;
-          item.style.left = `0px`;
-          item.style.top = `0px`;
-          item.style.boxShadow = "10px 10px gray";
+          if(item.tagName === "LI") {
+            item.style.left = `0vw`;
+            item.style.top = `0vw`;
+            item.style.boxShadow = "1vw 1vw gray";
+          }
+
         });
 
         this.generateLIandEventHandler('ptLabel',

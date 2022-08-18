@@ -77,9 +77,7 @@ function clickHandler(click, mathF) {
     }
 }
 
-window.addEventListener('resize', () => {
-    location.reload();
-});
+
 
 document.addEventListener('DOMContentLoaded', loadgraph);
 function loadgraph() {
@@ -204,7 +202,7 @@ function loadgraph() {
                 legend: { display: false }
             },
 
-            responsive: false,
+            responsive: true,
             scales: {
                 x: {
 
@@ -225,9 +223,23 @@ function loadgraph() {
         }
     });
 
-    mainCanvas.addEventListener('click', (click) => {
-        clickHandler.bind(myChart)(click, testf);
-    });
+    function clickHandlerWrapper(event) {
+        return clickHandler.call(myChart, event, testf);
+    }
+
+    mainCanvas.addEventListener('click', clickHandlerWrapper); // (click) => {
+        // clickHandler.bind(myChart)(click, testf);
+    // });
+
+
+//     window.addEventListener('resize', () => {
+//         mainCanvas.removeEventListener('click', clickHandlerWrapper);
+//         mainCanvas.addEventListener('click', clickHandlerWrapper);
+//     // mainCanvas.removeEventListener('click', (click) => {
+//     //     clickHandler.bind(myChart)(click, testf);
+//     // }
+//     // location.reload();
+// });
 
 }
 
