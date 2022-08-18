@@ -73,6 +73,13 @@
     color: darkgreen;
 }
 
+.splash-screen > h1 {
+    color: rgb(104, 1, 104);
+    font-size: 4.8vw; // can't use responsive font-size here, it will break the animation
+    font-weight: bold;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 .splash-description {
     display: flex;
     justify-content: center;
@@ -177,7 +184,7 @@
 
 .heading-main {
     color: rgb(104, 1, 104);
-    font-size: 4.8vw;
+    font-size: 32pt; // can't use responsive font-size here, it will break the animation
     font-weight: bold;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
