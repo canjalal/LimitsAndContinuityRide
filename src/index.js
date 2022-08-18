@@ -63,21 +63,14 @@ function clickHandler(click, mathF) {
 
     if(points.length) {
         const firstPoint = points[0];
-        // console.log(firstPoint);
         const value = this.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-        // console.log(firstPoint.datasetIndex);
 
         if(firstPoint.datasetIndex !== 0) {
-            // console.log(value.type);
-            // console.log(value.x)
             previewRight.style.display = 'none';
             
 
             let clickpt = new ClickPoint(mathF, value.x, this);
-            // console.log(clickpt);
-            // a.destroy();
         }
-        // console.log(value.y);
     } else {
         previewRight.style.display = 'flex';
     }
@@ -92,21 +85,14 @@ function loadgraph() {
     let splashscreen = document.getElementsByClassName('splash-screen')[0];    
 
     const mainCanvas = document.getElementById('main-canvas');
-    // mainCanvas.width = 800;
-    // mainCanvas.height = 600;
     mainCanvas.style.width  = '80vw';
     mainCanvas.style.height = '80vh';
     const ctx = mainCanvas.getContext('2d');
 
     // show preview pane and hide feature pane
     previewRight.style.display = 'flex';
-    // console.log(ctx);
 
     const testf = new MathFunction();
-    // console.log(testf.generatefineData().length);
-    // setTimeout(() => {
-    //     splashscreen.style.display = 'none';
-    // }, 1000);
 
     splashscreen.addEventListener('click', (event) => {
         event.currentTarget.style.display = 'none';
@@ -238,19 +224,9 @@ function loadgraph() {
         }
     });
 
-
-    console.log(myChart);
-
-
     mainCanvas.addEventListener('click', (click) => {
         clickHandler.bind(myChart)(click, testf);
     });
-
-
-
-    // drawVertLine(myChart, 5);
-
-    // console.log(TestData.generatedataHash(fineLabels, testf.generatefineData()));
 
 }
 

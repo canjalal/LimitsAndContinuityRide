@@ -154,13 +154,14 @@ export class Ashley {
     
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
-            drawHorizLine.call(this.chart, clickPt.findLHL());
             drawVertLine.call(this.chart, clickPt.x);
 
             await this.displayCaptionPromise(() => `I'm going to start my walk
              ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
              the next dot, can you see how ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'high' : 'low'} it is?`, 4000);
     
+             drawHorizLine.call(this.chart, clickPt.findLHL());
+
             let i = 1;
             while(currpos[0] < clickPt.x) {
     
@@ -179,10 +180,24 @@ export class Ashley {
             this.p.style.backgroundPosition = 'bottom 47px right -1px';
     
             let yf = this.chart.scales.y.min;
+            
+            let prevnode = clickPt.mathF.pNode; // find previous slope
+
+            while(prevnode.next.x !== clickPt.x) {
+                prevnode = prevnode.next;
+            }
+            // console.log(prevnode);
+
+            let prevSlope = prevnode.m;
+
+
     
-            let yi = clickPt.node.y;
+            let yi = clickPt.node.y - 0.5 * prevSlope;
             let xi = clickPt.x - 0.5;
             let currpos = this.setLocation(xi, yi);
+
+
+            drawVertLine.call(this.chart, clickPt.x);
 
            await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
              ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
@@ -209,19 +224,12 @@ export class Ashley {
 
 
         }
-
-        // console.log(this.chart);
-
-        // drawVertLine.call(this.chart, currx);
-        // drawHorizLine.call(this.chart, currx[1]);
-        // return [ycoords[ycoords.length - 2], ycoords[ycoords.length - 1]]; // last two points to get slope
     }
 
     async animaterhL(clickPt) {
 
         if(clickPt.findRHL()) {
 
-            drawHorizLine.call(this.chart, clickPt.findRHL());
             drawVertLine.call(this.chart, clickPt.x);
 
             this.p.style.transform = 'scaleX(-1)';
@@ -241,7 +249,8 @@ export class Ashley {
              ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'} toward 
              the next dot, can you see how ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'high' : 'low'} it is?`, 4000);
 
-    
+             drawHorizLine.call(this.chart, clickPt.findRHL());
+
             // console.log(currx);
     
             let i = 1;
@@ -266,12 +275,14 @@ export class Ashley {
     
             let yf = this.chart.scales.y.min;
     
-            let yi = clickPt.node.y;
+            let yi = (clickPt.node.y + clickPt.node.next.y) / 2;
             let xi = clickPt.x + 0.5;
             let currpos = this.setLocation(xi, yi);
 
+            drawVertLine.call(this.chart, clickPt.x);
+
             await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
-             ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'} toward 
+             ${yi > clickPt.node.next.y ? 'up' : 'down'} toward 
              the next dot to the left, do you see a problem with me getting there?`, 4000);
     
             let v = -0.03;
@@ -329,6 +340,10 @@ export class Ashley {
         this.p.style.background = 'url("./src/WalkingGirlForward.png")';
         this.p.style.backgroundSize = '72px';
         this.p.style.backgroundPosition = 'bottom 47px right -1px';
+        this.p.style.animationName = 'glow';
+        this.p.style.animationDuration = '1s';
+    
+        
         let fVal = clickPt.fValue;
         let yf = this.chart.scales.y.min;
 
@@ -337,12 +352,11 @@ export class Ashley {
         let currpos = this.setLocation(xi, yi);
 
         drawVertLine.call(this.chart, clickPt.x);
-        if(fVal === "undefined") {
-            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, there's some sort of gap that I fall through, so the function value f(${clickPt.x}) is undefined.`, 3000);
-        } else {
+
+        await this.displayCaptionPromise(() => `I'm going to try to jump onto the function from above. Can you guess how far I'll fall? Will I fall through any gaps or holes?`, 4000);
+
+        if(fVal !== "undefined") {
             yf = clickPt.node.yFilled;
-            // this.caption.innerHTML = `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`;
-            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`, 3000);
             drawHorizLine.call(this.chart, yf);
         }
 
@@ -357,6 +371,15 @@ export class Ashley {
         }
 
         currpos = await this.movewithDelay(xi, yf, 1000);
+
+        if(fVal === "undefined") {
+            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, there's a gap that I fall through, so the function value f(${clickPt.x}) is undefined.`, 4000);
+        } else {
+            yf = clickPt.node.yFilled;
+            // this.caption.innerHTML = `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`;
+            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`, 4000);
+            drawHorizLine.call(this.chart, yf);
+        }
 
     }
 
@@ -373,13 +396,7 @@ export class Ashley {
 
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
-            if (clickPt.isContinuous()) {
-                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's no jump or gap for me to fall through, so the function is continuous there`, 3000);
-            } else {
-                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's a jump or gap that I fall through, so the function isn't continuous there`, 3000);
-            }
-
-            // console.log(currx);
+            await this.displayCaptionPromise(() => `I'm about to run on the graph past the dashed line, can you see whether it'll be fine or will I fall off?`, 3000);
 
             let i = 1;
             while(currpos[0] < clickPt.x) {
@@ -387,11 +404,6 @@ export class Ashley {
                 currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10);
                 i += 1;
             }
-            // console.log(this.chart);
-
-            // drawVertLine.call(this.chart, currx);
-            // drawHorizLine.call(this.chart, currx[1]);
-            // return [ycoords[ycoords.length - 2], ycoords[ycoords.length - 1]]; // last two points to get slope
 
             let xi = clickPt.x;
             let yi = ycoords[ycoords.length - 1]
@@ -404,7 +416,6 @@ export class Ashley {
                 yi -= (this.chart.scales.y.max - this.chart.scales.y.min) / 200; // not physics-true, but make the person
                                                                                     // go down after the hole
                 currpos = this.setLocation(xi, yi);
-                // console.log(m);
 
                 let yf = this.chart.scales.y.min;
 
@@ -416,6 +427,9 @@ export class Ashley {
         
                     yi += m;
                 }
+
+                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's a jump or gap that I fall through, so the function isn't continuous there`, 3000);
+
                 
             } else {
 
@@ -427,9 +441,7 @@ export class Ashley {
                 ycoords = clickPt.rightData;
         
                 currpos = this.setLocation(xcoords[1], ycoords[1]);
-        
-                // console.log(currx);
-        
+                
                 let i = 1;
                 while(currpos[0] < clickPt.x + 0.5) {
         
@@ -437,6 +449,9 @@ export class Ashley {
                     this.chart.update();
                     i += 1;
                 }
+
+                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's no jump or gap for me to fall through, so the function is continuous there`, 3000);
+
 
             }
 

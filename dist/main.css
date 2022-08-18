@@ -256,3 +256,12 @@ table {
   background-size: 72vw;
   background-position: bottom 47vw right -1vw;
 }
+
+@keyframes glow {
+  from {
+    filter: drop-shadow(0px 0px 16px rgb(104, 1, 104));
+  }
+  to {
+    filter: none;
+  }
+}
