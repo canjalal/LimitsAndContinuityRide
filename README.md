@@ -1,23 +1,24 @@
-Limits and Continuity Version 1.00
+# Limits and Continuity Version 1.00
 
-Description
+![Screenshot 1: Ashley measures the function value at x = -1](/screenshot1.png)
+## Description
 
 This is a teaching tool to help students learn about the limits and continuity of functions
 
-How to Use
+## How to Use
 When you load / reload the page, the site will randomly generate a function with four types of discontinuities
 randomly placed: jump discontinuities, vertical asymptotes, removeable discontinuities ("holes"), and gaps ("essential discontinuities").
 
 Click a point to open a menu to the right. Then click on one of options on the right. Ashley will then walk on the function to show you
 how to visualize that particular feature of the graph. Try to predict the property before Ashley tells you!
 
-Support and Feedback
+## Support and Feedback
 github: canjalal
 
-Technology Stack:
+## Technology Stack:
 This is a client-side JavaScript application that uses the Chart.js library.
 
-Future Features:
+## Future Features:
 - Quiz
 - Game
 - Fully Random and Symmetric Discontinuities
