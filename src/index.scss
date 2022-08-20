@@ -35,8 +35,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
+
+@media screen and (width > 900px) {
+    .right-bar > li > p {
+        height: 6vw;
+        width: 16vw;
+    }
+} 
 
 .right-bar > li:hover {
     filter: hue-rotate(300deg);

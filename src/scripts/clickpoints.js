@@ -132,7 +132,8 @@ export class ClickPoint {
         const statusBar = document.getElementById('status-bar');
 
         newLI.id = id;
-        newLI.innerHTML = `<span>${innerText}</span>`;
+        newLI.innerHTML = `<span>${innerText}</span>
+        <p></p>`;
         // if(window.innerWidth < 900) {
         //     newLI.style.backgroundImage = 'none';
         // }
