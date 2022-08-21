@@ -140,6 +140,7 @@
 @keyframes glow {
     from {
         filter: drop-shadow(0px 0px 16px rgba(104, 1, 104));
+        transform: scale(3);
     }
     
     to {
