@@ -325,11 +325,11 @@ export class Ashley {
         let fullL = clickPt.fullL;
         let textcallback;
         if(fullL === "undefined") {
-            textcallback = () => `Since the height I think I'm going to from the left is different from the one I'm going
-            from the right, the two-sided full limit is undefined.`;
+            textcallback = () => `Since I'm ending up higher on one side than the other side,
+            the two-sided full limit is undefined.`;
         } else {
-            textcallback = () => `Since the height I think I'm going to from the left is the same as the one I'm approaching
-            from the right, the two-sided full limit is ${fullL}`;
+            textcallback = () => `Since I'm ending up just as high from from the left side as I am from the right side,
+            the two-sided full limit is ${fullL}`;
         }
 
         await this.animatelhL(clickPt);
