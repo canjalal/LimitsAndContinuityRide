@@ -67,6 +67,7 @@ table {
   border: 4px solid pink;
   height: 6vw;
   width: max(16vw, 140px);
+  padding-top: 0.6vh;
   cursor: pointer;
   border-radius: 1vw;
   box-shadow: 1vw 1vw gray;
