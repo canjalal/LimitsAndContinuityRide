@@ -120,28 +120,28 @@ table {
 #rhLimit > p {
   background: url("../src/leftarrow1.jpg");
   background-size: 3.2vw;
-  background-position: bottom 0.3vw right 4.4vw;
+  background-position: bottom 0.3vw right 4.8vw;
   background-repeat: no-repeat;
 }
 
 #fullLimit > p {
   background: url("../src/biarrow1.jpg");
   background-size: 4vw;
-  background-position: bottom 0.4vw right 5.5vw;
+  background-position: bottom 0.4vw right 6vw;
   background-repeat: no-repeat;
 }
 
 #funcValue > p {
   background: url("../src/downarrow1.jpg");
   background-size: 2.5vw;
-  background-position: bottom 0.4vw right 6.2vw;
+  background-position: bottom 0.4vw right 6.8vw;
   background-repeat: no-repeat;
 }
 
 #continuity > p {
   background: url("../src/wavyarrow.png");
   background-size: 4vw;
-  background-position: bottom 0vw right 5.5vw;
+  background-position: bottom 0vw right 5.9vw;
   background-repeat: no-repeat;
 }
 
