@@ -203,6 +203,11 @@ table {
   color: darkgreen;
 }
 
+.splash-screen em:first-of-type {
+  position: relative;
+  top: 3vh;
+}
+
 .splash-screen > h1 {
   color: rgb(104, 1, 104);
   font-size: 4.8vw;
