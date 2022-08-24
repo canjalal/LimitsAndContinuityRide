@@ -164,7 +164,7 @@ export class Ashley {
             await animateAshley.call(this.p);
 
             let i = 1;
-            while(currpos[0] < clickPt.x) {
+            while(currpos[0] < clickPt.x - FINE_GRAIN) {
     
                 currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
                 // this.chart.update();
@@ -255,7 +255,7 @@ export class Ashley {
             await animateAshley.call(this.p);
     
             let i = 1;
-            while(currpos[0] > clickPt.x + FINE_GRAIN) {
+            while(currpos[0] > clickPt.x + 2 * FINE_GRAIN) {
     
                 currpos = await this.movewithDelay(xcoords[i], ycoords[i], 10 + 2 * i);
                 // this.chart.update();
