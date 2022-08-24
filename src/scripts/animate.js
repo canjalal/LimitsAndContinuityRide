@@ -328,7 +328,7 @@ export class Ashley {
             textcallback = () => `Since I'm ending up higher on one side than the other side,
             the two-sided full limit is undefined.`;
         } else {
-            textcallback = () => `Since I'm ending up just as high from from the left side as I am from the right side,
+            textcallback = () => `Since I'm ending up just as high from the left side as I am from the right side,
             the two-sided full limit is ${fullL}`;
         }
 
