@@ -99,6 +99,8 @@ export class Ashley {
         this.caption.style.height = '150px';
 
         this.placeCaption(xi, yi);
+
+        this.caption.style.visibility = "hidden";
     }
 
     placeCaption(xi, yi) { // place in corner farthest away from point
@@ -313,12 +315,29 @@ export class Ashley {
     }
 
     async displayCaptionPromise(textcallback, delay = 3000) {
-        return new Promise(resolve => {
-            this.caption.innerHTML = textcallback();
-            setTimeout(() => {
-                resolve(true);
-            }, delay);
-        });
+
+        const timeout = async (ms) => new Promise(res => setTimeout(res, ms));
+
+        let timeToMoveOn = false; // ready for user to move on
+
+        const newButton = document.createElement("button");
+        function doneModal(e) {
+            timeToMoveOn = true;
+        }
+        newButton.innerHTML = "Continue";
+        newButton.addEventListener("click", doneModal);
+        this.caption.style.visibility = "visible";
+
+        this.caption.innerHTML = textcallback();
+        this.caption.appendChild(newButton);
+
+        while(timeToMoveOn === false) await timeout(50);
+        
+        timeToMoveOn = false;
+        newButton.removeEventListener("click", doneModal);
+        this.caption.removeChild(newButton);
+
+        this.caption.style.visibility = "hidden";
     }
 
     async animatefullL(clickPt) {
