@@ -90,9 +90,27 @@
     border: 2px solid black;
 }
 
+.continue-button {
+    font-weight: bold;
+    color: darkgreen;
+    cursor: pointer;
+}
+
 .disabledbutton {
     pointer-events: none;
     opacity: 0.4;
+}
+
+.overlay {
+    background-color: transparent;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    text-align: center;
+    display: none;
 }
 
 .heading-main {

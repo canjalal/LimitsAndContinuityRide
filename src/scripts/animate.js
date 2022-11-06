@@ -81,6 +81,11 @@ export class Ashley {
         this.xAxis = chart.scales.x
         this.yAxis = chart.scales.y;
 
+        let backgroundModal = document.querySelector(".overlay");
+
+        backgroundModal.style.display = "flex";
+        
+
         this.p = document.createElement('p');
         this.p.id = 'ashley';
 
@@ -91,7 +96,7 @@ export class Ashley {
         // this.p.style.top = `${this._ypos + A_HEIGHT }px`;
 
         // this.setLocation(xi, yi);
-        document.body.appendChild(this.p);
+        backgroundModal.appendChild(this.p);
 
         this.caption = document.createElement('div');
         this.caption.className = 'mini-splash';
@@ -112,6 +117,9 @@ export class Ashley {
 
         let x, y;
 
+
+        let backgroundModal = document.querySelector(".overlay");
+
         if (xmax - xi > xi - xmin) { // if it's farther from right side than left side, put caption on right side
             x = `${this.xAxis.getPixelForValue(xmax) - parseFloat(this.caption.style.width)}px`;
         } else {
@@ -125,7 +133,7 @@ export class Ashley {
         }
         this.caption.style.left = x;
         this.caption.style.top = y;
-        document.body.appendChild(this.caption);
+        backgroundModal.appendChild(this.caption);
     }
 
     setLocation(x, y) {
@@ -320,11 +328,12 @@ export class Ashley {
 
         let timeToMoveOn = false; // ready for user to move on
 
-        const newButton = document.createElement("button");
+        const newButton = document.createElement("div");
         function doneModal(e) {
             timeToMoveOn = true;
         }
-        newButton.innerHTML = "Continue";
+        newButton.classList.toggle("continue-button")
+        newButton.innerHTML = "Continue >>>";
         newButton.addEventListener("click", doneModal);
         this.caption.style.visibility = "visible";
 
@@ -501,7 +510,10 @@ export class Ashley {
     }
 
     destroy() {
-        this.p.parentNode.removeChild(this.p);
-        this.caption.parentNode.removeChild(this.caption);
+        let backgroundModal = document.querySelector(".overlay");
+
+        backgroundModal.style.display = "none"
+        backgroundModal.removeChild(this.p);
+        backgroundModal.removeChild(this.caption);
     }
 }
