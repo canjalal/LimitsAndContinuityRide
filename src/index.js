@@ -56,6 +56,7 @@ import {
 
 
 function clickHandler(click, mathF) {
+    
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
 
     let newRightBar = document.getElementsByClassName('right-bar')[0];

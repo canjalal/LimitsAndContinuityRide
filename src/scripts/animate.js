@@ -96,7 +96,8 @@ export class Ashley {
         // this.p.style.top = `${this._ypos + A_HEIGHT }px`;
 
         // this.setLocation(xi, yi);
-        backgroundModal.appendChild(this.p);
+        let mainCanvas = document.querySelector(".canvas-container");
+        mainCanvas.appendChild(this.p);
 
         this.caption = document.createElement('div');
         this.caption.className = 'mini-splash';
@@ -511,9 +512,10 @@ export class Ashley {
 
     destroy() {
         let backgroundModal = document.querySelector(".overlay");
+        let mainCanvas = document.querySelector(".canvas-container");
 
         backgroundModal.style.display = "none"
-        backgroundModal.removeChild(this.p);
+        mainCanvas.removeChild(this.p);
         backgroundModal.removeChild(this.caption);
     }
 }
