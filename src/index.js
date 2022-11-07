@@ -58,16 +58,6 @@ import {
 function clickHandler(click, mathF) {
 
 
-
-    var clickEvent = new MouseEvent("click", {
-        view: window,
-        bubbles: true,
-        cancelable: true
-    });
-
-    this.dispatchEvent(clickEvent);
-
-
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
 
     let newRightBar = document.getElementsByClassName('right-bar')[0];
@@ -225,6 +215,7 @@ function loadgraph() {
                 tooltip: { enabled: false },
                 legend: { display: false }
             },
+            events: ["mouseout", "touchend"],
             responsive: true,
             scales: {
                 x: {
