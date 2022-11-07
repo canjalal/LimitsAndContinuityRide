@@ -89,6 +89,7 @@ function loadgraph() {
         let splashCaption = document.querySelector("#splash-caption");
         let splashFooter = document.querySelector("#splash-footer");
         overlay.style.display = "flex";
+        splashCaption.style.fontSize = "100%";
         splashCaption.innerHTML = "This app is best viewed with your tablet or device screen sideways (landscape). Tilt your screen and refresh the page"
         splashFooter.parentNode.removeChild(splashFooter);
     }
