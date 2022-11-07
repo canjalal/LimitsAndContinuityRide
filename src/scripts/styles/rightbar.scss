@@ -1,4 +1,4 @@
-$side-width : max(16vw, 140px);
+$side-width : max(16vw, 120px);
 $dark-purple : rgb(104, 1, 104);
 .right-bar {
     display: flex;
@@ -128,3 +128,9 @@ $dark-purple : rgb(104, 1, 104);
     border:2px solid $dark-purple;
 
 }
+
+@media screen and (width < 700px) {
+    #funcValue > span {
+        font-size: 1rem;
+    }
+} 
