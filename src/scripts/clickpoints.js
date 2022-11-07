@@ -1,7 +1,7 @@
 import {Ashley } from './animate';
 
 
-export function drawVertLine(x) {
+export function drawVertLine(x, thickLines = false) {
 
     let ctx = this.ctx;
 
@@ -14,11 +14,11 @@ export function drawVertLine(x) {
     ctx.font = '18px sans-serif';
     ctx.fillText(`x = ${x}`, xpos - 18, yAxis.bottom - 10);
     ctx.beginPath();
-    ctx.setLineDash([5, 15]);
+    ctx.setLineDash(thickLines ? [12, 8] : [5, 15]);
     ctx.moveTo(xpos, yAxis.top);
-    ctx.lineTo(xpos, yAxis.bottom);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
+    ctx.lineTo(xpos, yAxis.bottom - 32);
+    ctx.lineWidth = thickLines ? 5 : 3;
+    ctx.strokeStyle = thickLines ? 'rgb(104, 1, 104)' : 'rgba(0, 0, 255, 0.4)';
     ctx.stroke();
     ctx.restore();
     ctx.setLineDash([]);
@@ -39,11 +39,11 @@ export function drawHorizLine(y) {
     ctx.font = '18px sans-serif';
     ctx.fillText(`y = ${y.toFixed(2)}`, xAxis.left + 10, ypos - 18);
     ctx.beginPath();
-    ctx.setLineDash([5, 15]);
+    ctx.setLineDash([12, 8]);
     ctx.moveTo(xAxis.right, ypos);
     ctx.lineTo(xAxis.left, ypos);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'rgba(0, 0, 255, 0.4)';
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'rgb(104, 1, 104)';
     ctx.stroke();
     ctx.restore();
     ctx.setLineDash([]);

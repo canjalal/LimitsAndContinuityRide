@@ -163,7 +163,7 @@ export class Ashley {
     
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
-            drawVertLine.call(this.chart, clickPt.x);
+            drawVertLine.call(this.chart, clickPt.x, true);
 
             await this.displayCaptionPromise(() => `I'm going to start my walk
              ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
@@ -208,7 +208,7 @@ export class Ashley {
             let currpos = this.setLocation(xi, yi);
 
 
-            drawVertLine.call(this.chart, clickPt.x);
+            drawVertLine.call(this.chart, clickPt.x, true);
 
            await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
              ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
@@ -241,7 +241,7 @@ export class Ashley {
 
         if(clickPt.findRHL()) {
 
-            drawVertLine.call(this.chart, clickPt.x);
+            drawVertLine.call(this.chart, clickPt.x, true);
 
             this.p.style.transform = 'scaleX(-1)';
 
@@ -292,7 +292,7 @@ export class Ashley {
             let xi = clickPt.x + 0.5;
             let currpos = this.setLocation(xi, yi);
 
-            drawVertLine.call(this.chart, clickPt.x);
+            drawVertLine.call(this.chart, clickPt.x, true);
 
             await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
              ${yi > clickPt.node.next.y ? 'up' : 'down'} toward 
@@ -363,7 +363,7 @@ export class Ashley {
         await this.animatelhL(clickPt);
         await this.animaterhL(clickPt);
         // console.log(this.chart.scales.y.max);
-        drawVertLine.call(this.chart, clickPt.x);
+        drawVertLine.call(this.chart, clickPt.x, true);
         await this.displayCaptionPromise(textcallback, 3000);
     }
 
@@ -382,7 +382,7 @@ export class Ashley {
         let xi = clickPt.x;
         let currpos = this.setLocation(xi, yi);
 
-        drawVertLine.call(this.chart, clickPt.x);
+        drawVertLine.call(this.chart, clickPt.x, true);
 
         await this.displayCaptionPromise(() => `I'm going to try to jump onto the function from above. Can you guess how far I'll fall? Will I fall through any gaps or holes?`, 4000);
 
@@ -423,7 +423,7 @@ export class Ashley {
             }
             let ycoords = clickPt.leftData;
 
-            drawVertLine.call(this.chart, clickPt.x);
+            drawVertLine.call(this.chart, clickPt.x, true);
 
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
