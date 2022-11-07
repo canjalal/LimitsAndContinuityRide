@@ -81,15 +81,10 @@ $splash-height: min(80vw, 80vh);
     // top: calc(50% - var(--height) / 2);
     // left: calc(50% - var(--width) / 2);
     text-align: center;
-    border-radius: 10%;
+    border-radius: 15px;
     border: 3px solid darkgreen;
     font-size: 1.33rem;
     padding: 10px;
-}
-
-#main-canvas {
-    // width: 100%;
-    border: 2px solid black;
 }
 
 .continue-button {

@@ -51,6 +51,8 @@ $dark-purple : rgb(104, 1, 104);
     border: 4px solid pink;
     width: $side-width;
     justify-content: center;
+    border-radius: calc($side-width / 20);
+    border-radius: calc($side-width / 10);
 }
 
 .preview-right > p {
