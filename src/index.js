@@ -81,7 +81,17 @@ function clickHandler(click, mathF) {
 
 document.addEventListener('DOMContentLoaded', loadgraph);
 function loadgraph() {
-    let splashscreen = document.getElementsByClassName('splash-screen')[0];    
+    let splashscreen = document.getElementsByClassName('splash-screen')[0];
+    
+    // Ask people to put their phone or tablet sideways
+    if(window.innerHeight > window.innerWidth) {
+        let overlay = document.querySelector(".overlay");
+        let splashCaption = document.querySelector("#splash-caption");
+        let splashFooter = document.querySelector("#splash-footer");
+        overlay.style.display = "flex";
+        splashCaption.innerHTML = "This app is best viewed with your tablet or device screen sideways (landscape). Tilt your screen and refresh the page"
+        splashFooter.parentNode.removeChild(splashFooter);
+    }
 
     const mainCanvas = document.getElementById('main-canvas');
     mainCanvas.style.width  = '80vw';
