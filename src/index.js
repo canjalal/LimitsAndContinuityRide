@@ -56,7 +56,18 @@ import {
 
 
 function clickHandler(click, mathF) {
-    
+
+
+
+    var clickEvent = new MouseEvent("click", {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
+
+    this.dispatchEvent(clickEvent);
+
+
     const points = this.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
 
     let newRightBar = document.getElementsByClassName('right-bar')[0];
@@ -64,6 +75,7 @@ function clickHandler(click, mathF) {
 
 
     if(points.length) {
+
         const firstPoint = points[0];
         const value = this.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
 
@@ -213,7 +225,6 @@ function loadgraph() {
                 tooltip: { enabled: false },
                 legend: { display: false }
             },
-            events: ["mouseout", "touchend"],
             responsive: true,
             scales: {
                 x: {

@@ -168,7 +168,7 @@ export class Ashley {
 
             await this.displayCaptionPromise(() => `I'm going to start my walk
              ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
-             the next dot, can you see how ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'high' : 'low'} it is?`, 4000);
+             the next dot, can you see how ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'high' : 'low'} it is?`, clickPt.x);
     
              drawHorizLine.call(this.chart, clickPt.findLHL());
              
@@ -185,7 +185,7 @@ export class Ashley {
             await animateAshley.call(this.p);
 
             await this.displayCaptionPromise(() => `Walking from left to right towards x = ${clickPt.x}, I go ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'}
-            the hill, getting closer and closer to a height of ${clickPt.lhL}. That's the left-handed limit.`, 4000);
+            the hill, getting closer and closer to a height of ${clickPt.lhL}. That's the left-handed limit.`, clickPt.x);
 
         } else {
 
@@ -213,7 +213,7 @@ export class Ashley {
 
            await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
              ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
-             the next dot to the right, do you see a problem with me getting there?`, 4000);
+             the next dot to the right, do you see a problem with me getting there?`, clickPt.x);
     
             let v = -0.03;
     
@@ -228,7 +228,7 @@ export class Ashley {
             currpos = await this.movewithDelay(xi, yf, 1000);
 
             await this.displayCaptionPromise(() => `I tried to walk on the function towards x = ${clickPt.x} but there's a gap so I fell down.
-            This means the left-handed limit is undefined.`, 4000);
+            This means the left-handed limit is undefined.`, clickPt.x);
 
             this.p.style.background = 'url("./src/WalkingGirl2.png")';
             this.p.style.backgroundSize = '84px';
@@ -259,7 +259,7 @@ export class Ashley {
 
             await this.displayCaptionPromise(() => `I'm going to start my walk
              ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'} toward 
-             the next dot, can you see how ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'high' : 'low'} it is?`, 4000);
+             the next dot, can you see how ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'high' : 'low'} it is?`, clickPt.x);
 
              drawHorizLine.call(this.chart, clickPt.findRHL());
 
@@ -276,7 +276,7 @@ export class Ashley {
             await animateAshley.call(this.p);
     
             await this.displayCaptionPromise(() => `Walking from right to left towards x = ${clickPt.x}, I go ${ycoords[ycoords.length - 2] > ycoords[ycoords.length - 3] ? 'up' : 'down'}
-            the hill, getting closer and closer to a height of ${clickPt.rhL}. That's the right-handed limit.`, 4000);
+            the hill, getting closer and closer to a height of ${clickPt.rhL}. That's the right-handed limit.`, clickPt.x);
 
             this.p.style.transform = 'scaleX(1)'; // don't forget to reverse this
 
@@ -297,7 +297,7 @@ export class Ashley {
 
             await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
              ${yi > clickPt.node.next.y ? 'up' : 'down'} toward 
-             the next dot to the left, do you see a problem with me getting there?`, 4000);
+             the next dot to the left, do you see a problem with me getting there?`, clickPt.x);
     
             let v = -0.03;
     
@@ -315,7 +315,7 @@ export class Ashley {
 
 
             await this.displayCaptionPromise(() => `I tried to walk on the function towards x = ${clickPt.x} but there's a gap so I fell down.
-            This means the right-handed limit is undefined.`, 4000);
+            This means the right-handed limit is undefined.`, clickPt.x);
 
         }
 
@@ -323,7 +323,7 @@ export class Ashley {
         
     }
 
-    async displayCaptionPromise(textcallback, delay = 3000) {
+    async displayCaptionPromise(textcallback, xval) {
 
         const timeout = async (ms) => new Promise(res => setTimeout(res, ms));
 
@@ -340,6 +340,8 @@ export class Ashley {
 
         this.caption.innerHTML = textcallback();
         this.caption.appendChild(newButton);
+
+        // drawVertLine.call(this.chart, xval, true);
 
         while(timeToMoveOn === false) await timeout(50);
         
@@ -365,7 +367,7 @@ export class Ashley {
         await this.animaterhL(clickPt);
         // console.log(this.chart.scales.y.max);
         drawVertLine.call(this.chart, clickPt.x, true);
-        await this.displayCaptionPromise(textcallback, 3000);
+        await this.displayCaptionPromise(textcallback, clickPt.x);
     }
 
     async animateFuncValue(clickPt) {
@@ -385,7 +387,7 @@ export class Ashley {
 
         drawVertLine.call(this.chart, clickPt.x, true);
 
-        await this.displayCaptionPromise(() => `I'm going to try to jump onto the function from above. Can you guess how far I'll fall? Will I fall through any gaps or holes?`, 4000);
+        await this.displayCaptionPromise(() => `I'm going to try to jump onto the function from above. Can you guess how far I'll fall? Will I fall through any gaps or holes?`, clickPt.x);
 
         if(fVal !== "undefined") {
             yf = clickPt.node.yFilled;
@@ -405,11 +407,11 @@ export class Ashley {
         currpos = await this.movewithDelay(xi, yf, 1000);
 
         if(fVal === "undefined") {
-            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, there's a gap that I fall through, so the function value f(${clickPt.x}) is undefined.`, 4000);
+            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, there's a gap that I fall through, so the function value f(${clickPt.x}) is undefined.`, clickPt.x);
         } else {
             yf = clickPt.node.yFilled;
             // this.caption.innerHTML = `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`;
-            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`, 4000);
+            await this.displayCaptionPromise(() => `When I try to land on the function at x = ${clickPt.x}, I land at a height of y = ${fVal}, and that's the value of f(${clickPt.x})`, clickPt.x);
             drawHorizLine.call(this.chart, yf);
         }
 
@@ -428,7 +430,7 @@ export class Ashley {
 
             let currpos = this.setLocation(xcoords[1], ycoords[1]);
 
-            await this.displayCaptionPromise(() => `I'm about to run on the graph past the dashed line, can you see whether it'll be fine or will I fall off?`, 3000);
+            await this.displayCaptionPromise(() => `I'm about to run on the graph past the dashed line, can you see whether it'll be fine or will I fall off?`, clickPt.x);
             animateAshley.call(this.p);
             let i = 1;
             while(currpos[0] < clickPt.x) {
@@ -462,7 +464,7 @@ export class Ashley {
 
                 await animateAshley.call(this.p);
 
-                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's a jump or gap that I fall through, so the function isn't continuous there`, 3000);
+                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's a jump or gap that I fall through, so the function isn't continuous there`, clickPt.x);
 
                 
             } else {
@@ -485,7 +487,7 @@ export class Ashley {
 
                 await animateAshley.call(this.p);
 
-                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's no jump or gap for me to fall through, so the function is continuous there`, 3000);
+                await this.displayCaptionPromise(() => `When I try to run on the function over x = ${clickPt.x}, there's no jump or gap for me to fall through, so the function is continuous there`, clickPt.x);
 
 
             }
