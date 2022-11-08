@@ -102,9 +102,9 @@ export class Ashley {
         this.caption = document.createElement('div');
         this.caption.className = 'mini-splash';
         // to reference these properties before being added to document, can't use CSS media query:
-        this.caption.style.width = window.innerWidth > 700 ? '300px' : '200px';
-        this.caption.style.height = window.innerWidth > 700 ? '150px' : '100px'; 
-        this.caption.style.fontSize = window.innerWidth > 700 ? '22px' : '14px';
+        this.caption.style.width = window.innerWidth > 700 && window.innerHeight > 350 ? '300px' : '200px';
+        this.caption.style.height = window.innerWidth > 700 && window.innerHeight > 350 ? '150px' : '100px'; 
+        this.caption.style.fontSize = window.innerWidth > 700 && window.innerHeight > 350 ? '22px' : '14px';
 
         this.placeCaption(xi, yi);
 
