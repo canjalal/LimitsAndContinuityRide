@@ -49,7 +49,7 @@ $splash-height: min(80vw, 80vh);
 
 .splash-screen > h1 {
     color: rgb(104, 1, 104);
-    font-size: 4.8vw; // can't use responsive font-size here, it will break the animation
+    font-size: 4.2vw; // can't use responsive font-size here, it will break the animation
     font-weight: bold;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
@@ -60,7 +60,7 @@ $splash-height: min(80vw, 80vh);
     align-items: center;
 }
 
-.splash-description p {
+#splash-caption {
     font-size: 2.4vw;
     text-align: left;
     width: 40vw;
