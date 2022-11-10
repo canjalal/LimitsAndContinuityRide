@@ -214,7 +214,7 @@ export class Ashley {
             drawVertLine.call(this.chart, clickPt.x, true);
 
            await this.displayCaptionPromise(() => `I'm going to TRY to start my walk
-             ${clickPt.leftData[clickPt.leftData.length - 1] > clickPt.leftData[clickPt.leftData.length - 2] ? 'up' : 'down'} toward
+            ${yi < clickPt.node.next.y ? 'up' : 'down'} toward
              the next dot to the right, do you see a problem with me getting there?`, clickPt.x);
     
             let v = -0.03;
