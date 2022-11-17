@@ -215,7 +215,7 @@ function loadgraph() {
                 tooltip: { enabled: false },
                 legend: { display: false }
             },
-            events: ["mouseout", "mousemove", "mouseover", "click"],
+            events: ["mouseout"],
             responsive: true,
             scales: {
                 x: {
